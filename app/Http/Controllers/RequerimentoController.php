@@ -11,7 +11,6 @@ class RequerimentoController extends Controller
 
         $requerimento = new Requerimento;
   
-        //$requerimento->id = ;
         $requerimento->titulo = $request->titulo;
         $requerimento->tipo = $request->tipo;
         $requerimento->situacao = "Pendente";
@@ -27,6 +26,6 @@ class RequerimentoController extends Controller
   
         $requerimento->save();
   
-        return redirect('historico');
+        return redirect('history');
        }
 }

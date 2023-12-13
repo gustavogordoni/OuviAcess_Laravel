@@ -7,12 +7,6 @@ use App\Models\Usuario;
 
 class UsuarioController extends Controller
 {
-   /*
-   public function create(){
-    return view('.');
-   }
-   */
-
    public function store(Request $request){
 
       $usuario = new Usuario;
@@ -25,6 +19,6 @@ class UsuarioController extends Controller
 
       $usuario->save();
 
-      return redirect('/');
+      return redirect('home');
      }
 }

@@ -7,7 +7,7 @@ use App\Models\Requerimento;
 use App\Models\Usuario;
 use App\Models\Administrador;
 
-class EventController extends Controller
+class NavegationController extends Controller
 {
     public function index(){
         return view('inicio');
