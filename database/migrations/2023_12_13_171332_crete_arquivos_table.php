@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('arquivos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_requerimento')->nullable()->constrained('requerimentos');
+            //$table->foreignId('id_requerimento')->nullable()->constrained('requerimentos');
+            $table->unsignedBigInteger('id_requerimento')->nullable();
+            $table->foreign('id_requerimento')->references('id')->on('requerimentos');
             
             $table->string('nome');
             $table->binary('dados');

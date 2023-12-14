@@ -16,12 +16,14 @@ return new class extends Migration
         Schema::create('requerimentos', function (Blueprint $table) {
             //$table->integer('id');
             $table->id();
-            $table->foreignId('id_usuario')->nullable()->constrained('usuarios');
+            //$table->foreignId('id_usuario')->nullable()->constrained('usuarios');
+            $table->unsignedBigInteger('id_usuario')->nullable();
+            $table->foreign('id_usuario')->references('id')->on('usuarios');
             
-            $table->string('titulo', 150);
-            $table->string('tipo', 8);
-            $table->string('situacao', 12);
-            $table->string('data', 10);
+            $table->string('titulo');
+            $table->string('tipo');
+            $table->string('situacao');
+            $table->date('data');
             $table->text('descricao');
             
             $table->string('cep', 10);

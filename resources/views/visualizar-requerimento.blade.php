@@ -95,7 +95,7 @@ if ($cont >= 1) {
 
                     <div class="col-md-4">
                         <label for="logradouro" class="form-label"><strong>Data: </strong></label>
-                        <input readonly type="text" class="form-control" id="logradouro" name="logradouro" value="{{ $requerimento->data }}">
+                        <input readonly type="text" class="form-control" id="logradouro" name="logradouro" value="{{ \Carbon\Carbon::parse($requerimento->data)->format('d/m/Y') }}">
                     </div>
 
                     <div class="col-md-8">

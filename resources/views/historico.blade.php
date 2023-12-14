@@ -136,7 +136,7 @@ if (!autenticado()) {
                         <td><strong class="text-danger">{{ $requerimento->situacao }}</strong></td>
                         @endif
 
-                        <td>{{ $requerimento->data }}</td>
+                        <td>{{ \Carbon\Carbon::parse($requerimento->data)->format('d/m/Y') }}</td>
                         <td>                            
                             <form action="show-request" method="GET" class="form my-auto">
                                 <button class="btn btn-outline-primary my-auto mx-1 rounded-circle p-2" type="submit" value="{{ $requerimento->id }}" name="visualizar">
