@@ -1,4 +1,7 @@
-@include ('layouts.header')
+@extends('layouts.html')
+
+@section('body')
+@include ('layouts.funcoes')
 
 @php
 /*
@@ -19,7 +22,6 @@ $result = $stmt->execute([$id_usuario]);
 $rowUsuario = $stmt->fetch();
 $cont =  $stmt->rowCount();
 
-require 'navbar.php';
 */
 @endphp
 @include ('layouts.navbar')
@@ -35,7 +37,7 @@ require 'navbar.php';
         <div class="row">
             <div class="col-11 mx-auto mb-4">
 
-                <form class="needs-validation" action="alterar-perfil.php" method="POST">
+                <form class="needs-validation" action="{{ route('update-profile')}}" method="POST">
                     <div class="row g-3">
 
                         <div class="col-sm-12">
@@ -85,7 +87,7 @@ require 'navbar.php';
                             </div>                            
                         </div>
                         <div class="mt-1 col-12 row">
-                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="perfil.php">Voltar ao perfil</a>
+                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="profile">Voltar ao perfil</a>
                         </div>
 
                 </form>
@@ -225,6 +227,9 @@ require 'navbar.php';
     });
 </script>
 
-@include ('mensagens');
-@include ('layouts.footer');
-@include ('layouts.js');
+@if($mensagens = Session::get('message'))
+        @include('layouts.message', ['mensagens' => $mensagens])           
+    @endif
+@include ('layouts.footer')
+
+@endsection

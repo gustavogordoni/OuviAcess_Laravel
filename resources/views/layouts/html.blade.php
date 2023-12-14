@@ -1,5 +1,3 @@
-@include ('funcoes')
-
 @php
 if (basename($_SERVER["PHP_SELF"]) != "mostrar-imagem.php") {
   session_start();
@@ -58,7 +56,7 @@ setcookie("tema", $tema, $tempo_expiracao, "/");
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OuviAcess</title>
+  <title>OuviAcess @yield('title')</title>
   <link rel="icon" href="../image/MegAfone.png" type="image/x-icon">
 
   <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -69,15 +67,13 @@ setcookie("tema", $tema, $tempo_expiracao, "/");
 </head>
 
 <body>
+  
+  @yield('body')
 
-@php
-if (!function_exists('ativar')) {
-    function ativar($pagina){
-        if (basename($_SERVER["PHP_SELF"]) == $pagina) {
-            return " active rounded-4";
-        } else {
-            return null;
-        }
-    }
-}
-@endphp
+  <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>-->
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/script.js"></script>
+
+</body>
+
+</html>

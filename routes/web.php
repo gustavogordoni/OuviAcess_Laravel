@@ -17,38 +17,42 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-use App\Http\Controllers\NavegationController;
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\AdministratorController;
 
 /* Navegação pelas Páginas */
 
-Route::get('/home', [NavegationController::class, 'index']);
+Route::view('/home', 'inicio')->name('home');
 
-Route::get('/request', [RequestController::class, 'index']);
+Route::view('/authentication', 'login')->name('authentication');
 
-Route::get('/history', [RequestController::class, 'historico']);
+Route::get('/request', [RequestController::class, 'index'])->name('request');
 
-Route::get('/authentication', [NavegationController::class, 'login']);
+Route::get('/history', [RequestController::class, 'historico'])->name('history');
 
-Route::get('/register', [UserController::class, 'cadastro_usuario']);
+//Route::get('/history/{$order}', [RequestController::class, 'show'])->name('history-order');
 
-Route::get('/profile', [UserController::class, 'create']);
+Route::get('/register', [UserController::class, 'index'])->name('register');
 
-Route::get('/edit-profile', [UserController::class, 'edit']);
+Route::get('/profile', [UserController::class, 'create'])->name('profile');
 
-Route::get('/delete-profile', [UserController::class, 'edit']);
+Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile');
 
-Route::get('/show-request/{id}', [RequestController::class, 'show']);
+Route::get('/delete-profile', [UserController::class, 'edit'])->name('delete-profile');
 
-Route::get('/edit-request/{id}', [RequestController::class, 'edit']);
+Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request');
 
-Route::get('/destoy-request/{id}', [RequestController::class, 'destroy']);
+Route::get('/edit-request/{id}', [RequestController::class, 'edit'])->name('edit-request');
 
+Route::get('/destoy-request/{id}', [RequestController::class, 'destroy'])->name('destoy-request');
+
+/* Autenticação Usuário */
+Route::post('/auth', [AuthenticationController::class, 'auth'])->name('auth');
 
 /* Create Usuário */
-Route::post('/adicionar-usuario', [UserController::class, 'store']);
+Route::post('/store-user', [UserController::class, 'store'])->name('store-user');;
 
 /* Create Requerimento */
-Route::post('/adicionar-requerimento', [RequestController::class, 'store']);
+Route::post('/store-request', [RequestController::class, 'store'])->name('store-request');;

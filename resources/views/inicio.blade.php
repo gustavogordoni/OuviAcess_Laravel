@@ -1,4 +1,7 @@
-@include ('layouts.header')
+@extends('layouts.html')
+
+@section('body')
+@include ('layouts.funcoes')
 @include ('layouts.navbar')
 @include ('carrousel')
     
@@ -40,12 +43,9 @@
         <a href="#myCarousel"><button class="btn btn-outline-info rounded-pill px-3">Voltar ao topo</button></a>
     </div>
 
-    <?php
-    /*
-    require '../database/conexao.php'
-    */
-    ?>
+@if($mensagens = Session::get('message'))
+    @include('layouts.message', ['mensagens' => $mensagens])           
+@endif
+@include ('layouts.footer')
 
-@include ('mensagens');
-@include ('layouts.footer');
-@include ('layouts.js');
+@endsection

@@ -17,4 +17,14 @@ if (!function_exists('redireciona')) {
         header("Location: " . $pagina);
     }
 }
+
+if (!function_exists('ativar')) {
+      function ativar($pagina){
+          if (basename($_SERVER["PHP_SELF"]) == $pagina) {
+              return " active rounded-4";
+          } else {
+              return null;
+          }
+      }
+  }
 @endphp

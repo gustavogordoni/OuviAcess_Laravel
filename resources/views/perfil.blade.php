@@ -1,4 +1,8 @@
-@include ('layouts.header')
+@extends('layouts.html')
+@section('title', '- Profile')
+
+@section('body')
+@include ('layouts.funcoes')
 
 @php
 /*
@@ -62,7 +66,7 @@ $firstName = $nome[0];
 
                     <div class="mt-4 col-12 row">
                         <div class="col-lg-6 mb-3">
-                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="inicio.php">Voltar ao início</a>
+                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="home">Voltar ao início</a>
                         </div>
                         <div class="col-lg-6">
                             <a href="edit-profile" class="w-100 btn btn-warning rounded-pill px-3 btn-lg" value="{{ $usuario->id }}">
@@ -109,6 +113,9 @@ $firstName = $nome[0];
     </div>
 </div>
 
-@include ('mensagens')
+@if($mensagens = Session::get('message'))
+        @include('layouts.message', ['mensagens' => $mensagens])           
+    @endif
 @include ('layouts.footer')
-@include ('layouts.js')
+
+@endsection

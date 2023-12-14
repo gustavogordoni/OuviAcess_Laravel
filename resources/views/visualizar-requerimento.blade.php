@@ -1,4 +1,7 @@
-@include ('layouts.header')
+@extends('layouts.html')
+
+@section('body')
+@include ('layouts.funcoes')
 
 @php
 /*
@@ -206,24 +209,23 @@ if ($cont >= 1) {
 
                     <div class="mt-4 col-12 row">
                         <div class="col-md-6 mb-3">
-                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="history">Voltar ao histórico</a>
+                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="{{ route('history') }}">Voltar ao histórico</a>
                         </div>
-                        <div class="col-md-6">
-                            <form action="editar-requerimento.php" method="GET" class="form my-auto">
-                                <button class="w-100 btn btn-warning rounded-pill px-3 btn-lg" type="submit" value="{{ $requerimento->id }}" name="editar">
-                                    Alterar informações
-                                </button>
-                            </form>
+                        <div class="col-md-6">                            
+                            <a href="{{ route('edit-request', $requerimento->id) }}" class="w-100 btn btn-warning rounded-pill px-3 btn-lg" value="{{ $requerimento->id }}" name="editar">
+                                Alterar informações
+                            </a>                            
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </main>
 </div>
 
-
+@if($mensagens = Session::get('message'))
+    @include('layouts.message', ['mensagens' => $mensagens])           
+@endif
 @include ('layouts.footer')
-@include ('layouts.js')
+
+@endsection

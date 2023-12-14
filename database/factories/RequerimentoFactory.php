@@ -24,7 +24,7 @@ class RequerimentoFactory extends Factory
             'situacao' => $this->faker->randomElement(['Pendente', 'Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']),
             'data' => $this->faker->unique()->date,
             'descricao' => $this->faker->text,
-            'cep' => $this->faker->postcode,
+            'cep' => $this->faker->numerify('##.###-###'),
             'cidade' => $this->faker->city,
             'bairro' => $this->faker->word,
             'logradouro' => $this->faker->streetName,

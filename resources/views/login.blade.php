@@ -1,4 +1,8 @@
-@include ('layouts.header')
+@extends('layouts.html')
+@section('title', '- Login')
+
+@section('body')
+@include ('layouts.funcoes')
 
 @php
 if (isset($_SESSION["error_senha"])) {
@@ -8,8 +12,8 @@ if (isset($_SESSION["error_senha"])) {
 @endphp
 <div class="row p-5 py-2 my-auto h-100">
 
-  <form action="verificar-login" method="POST" class="border border border-opacity-50 border-info-subtle border-3 rounded-4 bg-body-tertiary bg-opacity-75 my-auto row d-flex justify-content-center align-items-center col-lg-6 py-5">
-
+  <form action="{{ route('auth')}}" method="POST" class="border border border-opacity-50 border-info-subtle border-3 rounded-4 bg-body-tertiary bg-opacity-75 my-auto row d-flex justify-content-center align-items-center col-lg-6 py-5">
+    @csrf
     <div class="form-floating mb-2 col-md-12">
       <a href="home">
         <img src="../image/OuviAcess.png" alt="" width="200vw" class="mb-4 d-block mx-auto">
@@ -37,5 +41,8 @@ if (isset($_SESSION["error_senha"])) {
   </div>
 </div>
 
-@include ('mensagens');
-@include ('layouts.js');
+@if($mensagens = Session::get('message'))
+        @include('layouts.message', ['mensagens' => $mensagens])           
+    @endif
+
+@endsection

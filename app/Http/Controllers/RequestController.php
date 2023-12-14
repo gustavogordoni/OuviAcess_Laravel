@@ -52,7 +52,7 @@ class RequestController extends Controller
   
         $requerimento->save();
   
-        return redirect('history');
+        return redirect()->route('history')->with('message', ['success_request' => 'store']);
     }
 
     /**
@@ -62,9 +62,9 @@ class RequestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {    
         $requerimento = Requerimento::where('id', $id)->first();               
-        return view('visualizar-requerimento', ['requerimento' => $requerimento]);
+        return view('visualizar-requerimento', compact('requerimento'));        
     }
 
     /**
@@ -76,7 +76,7 @@ class RequestController extends Controller
     public function edit($id)
     {
         $requerimento = Requerimento::where('id', $id)->first();               
-        return view('editar-requerimento', ['requerimento' => $requerimento]);
+        return view('editar-requerimento', compact('requerimento'));
     }
 
     /**
@@ -105,7 +105,7 @@ class RequestController extends Controller
     /* MINHAS FUNÇÕES */
     public function historico(){
         $requerimentos = Requerimento::all();
-        return view('historico', ['requerimentos' => $requerimentos]);
+        return view('historico', compact('requerimentos'));
     }
 
     public function visualizar_requerimento($id){

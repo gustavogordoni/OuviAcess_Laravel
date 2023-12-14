@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Arquivo extends Model
 {
     use HasFactory;
+
+    public function requerimento(){
+        return $this->belongsTo(Requerimento::class, 'id_requerimento');
+    }
 }

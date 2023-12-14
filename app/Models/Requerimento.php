@@ -10,6 +10,6 @@ class Requerimento extends Model
     use HasFactory;
 
     public function usuario(){
-        return $this->belongsTo('App\Models\Usuario');
+        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 }

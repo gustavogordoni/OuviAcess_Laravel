@@ -1,4 +1,8 @@
-@include ('layouts.header')
+@extends('layouts.html')
+@section('title', '- Register')
+
+@section('body')
+@include ('layouts.funcoes')
 @include ('layouts.navbar')
 
 @php
@@ -32,7 +36,7 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
     <div class="row">
       <div class="col-11 mx-auto">
 
-        <form class="needs-validation" action="adicionar-usuario" method="post">
+        <form class="needs-validation" action="{{ route('store-user') }}" method="POST">
         @csrf
           <div class="row g-3">
 
@@ -186,6 +190,9 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
     });
   </script>
 
-@include ('mensagens')
+@if($mensagens = Session::get('message'))
+        @include('layouts.message', ['mensagens' => $mensagens])           
+    @endif
 @include ('layouts.footer')
-@include ('layouts.js')
+
+@endsection

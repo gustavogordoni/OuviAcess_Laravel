@@ -1,8 +1,10 @@
-@include ('layouts.header')
-@include ('layouts.navbar')
+@extends('layouts.html')
+@section('title', '- Request')
 
-@php
+@section('body')
+@include ('layouts.funcoes')
 
+@php 
 if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requerimento"])) {
   $titulo = $_SESSION["titulo_requerimento"];
   $tipo = $_SESSION["tipo_requerimento"];
@@ -22,8 +24,9 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
   unset($_SESSION["descricao_requerimento"]);
   unset($_SESSION["anonimo_requerimento"]);
 }
-
 @endphp
+
+@include ('layouts.navbar')
 
 <div class="container mx-auto">
   <main>
@@ -44,7 +47,7 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
     <div class="row">
       <div class="col-11 mx-auto">
 
-        <form class="needs-validation" action="adicionar-requerimento" method="POST" enctype="multipart/form-data">
+        <form class="needs-validation" action="{{ route('store-request') }}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="row g-3">
 
@@ -335,6 +338,9 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
     });
   </script>
 
-@include ('mensagens')
+@if($mensagens = Session::get('message'))
+        @include('layouts.message', ['mensagens' => $mensagens])           
+    @endif
 @include ('layouts.footer')
-@include ('layouts.js')
+
+@endsection

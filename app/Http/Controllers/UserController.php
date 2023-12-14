@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view('cadastro-usuario');
     }
 
     /**
@@ -25,7 +25,7 @@ class UserController extends Controller
     public function create()
     {
         $usuario = Usuario::all()->first();
-        return view('perfil', ['usuario' => $usuario]);
+        return view('perfil', compact('usuario'));
     }
 
     /**
@@ -46,7 +46,8 @@ class UserController extends Controller
 
         $usuario->save();
 
-        return redirect('home');
+        //return redirect('home');
+        return redirect()->route('home')->with('message', ['success_user' => 'store']);
     }
 
     /**
@@ -69,7 +70,7 @@ class UserController extends Controller
     public function edit()
     {
         $usuario = Usuario::all()->first();
-        return view('editar-perfil', ['usuario' => $usuario]);
+        return view('editar-perfil', compact('usuario'));
     }
 
     /**
@@ -94,11 +95,4 @@ class UserController extends Controller
     {
         //
     }
-
-
-    /* MINHAS FUNÇÕES */
-
-    public function cadastro_usuario(){
-        return view('cadastro-usuario');
-    } 
 }

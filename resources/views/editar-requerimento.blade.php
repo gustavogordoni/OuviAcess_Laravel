@@ -1,4 +1,7 @@
-@include ('layouts.header')
+@extends('layouts.html')
+
+@section('body')
+@include ('layouts.funcoes')
 
 @php
 /*
@@ -158,7 +161,7 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
 
                         <div class="mt-5 col-12 row">
                             <div class="col-md-6 mb-3">
-                                <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="history">Voltar ao histórico</a>
+                                <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="{{ route('history') }}">Voltar ao histórico</a>
                             </div>
                             <div class="col-md-6">
                                 <button class="w-100 btn btn-primary btn-lg rounded-pill px-3" type="submit">Enviar</button>
@@ -351,6 +354,9 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
     });
 </script>
 
-@include ('mensagens')
+@if($mensagens = Session::get('message'))
+        @include('layouts.message', ['mensagens' => $mensagens])           
+    @endif
 @include ('layouts.footer')
-@include ('layouts.js')
+
+@endsection
