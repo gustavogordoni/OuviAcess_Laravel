@@ -1,7 +1,7 @@
-<?php
-include 'header.php';
+@include ('layouts.header')
 
-
+@php
+/*
 if (autenticado()) {
     $id_usuario = $_SESSION["id_usuario"];
 } elseif (!autenticado()) {
@@ -20,13 +20,15 @@ $rowUsuario = $stmt->fetch();
 $cont =  $stmt->rowCount();
 
 require 'navbar.php';
-?>
+*/
+@endphp
+@include ('layouts.navbar')
 
 <div class="container mx-auto h-75">
     <main>
         <div class="py-3 text-center mt-4">
             <strong>
-                <h2>Olá <strong><?= $rowUsuario['nome'] ?></strong> <span class="fs-2">&#128075;</span></h2>
+                <h2>Olá <strong>{{ $usuario->nome }}</strong> <span class="fs-2">&#128075;</span></h2>
             </strong>
         </div>
 
@@ -38,7 +40,7 @@ require 'navbar.php';
 
                         <div class="col-sm-12">
                             <label for="nome" class="form-label" id="label_nome"><strong>Nome completo: </strong></label>
-                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="<?= $rowUsuario["nome"] ?>" maxlength="150">
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="{{ $usuario->nome }}" maxlength="150">
                             <div class="invalid-feedback">
                                 Informe seu nome completo
                             </div>
@@ -46,7 +48,7 @@ require 'navbar.php';
 
                         <div class="col-sm-3">
                             <label for="ddd" class="form-label"><strong>DDD: </strong></label>
-                            <input type="tel" class="form-control" id="ddd" name="ddd" required pattern="\([0-9]{2}\)$" title="Digite o DDD no formato (DD)" placeholder="Ex: (17)" value="<?= $rowUsuario["ddd"] ?>" maxlength="4">
+                            <input type="tel" class="form-control" id="ddd" name="ddd" required pattern="\([0-9]{2}\)$" title="Digite o DDD no formato (DD)" placeholder="Ex: (17)" value="{{ $usuario->ddd }}" maxlength="4">
 
                             <div class="invalid-feedback">
                                 Informe um valor válido
@@ -55,7 +57,7 @@ require 'navbar.php';
 
                         <div class="col-sm-9">
                             <label for="telefone" class="form-label"><strong>Número de telefone: </strong></label>
-                            <input type="tel" class="form-control" id="telefone" name="telefone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="<?= $rowUsuario["telefone"] ?>" maxlength="10">
+                            <input type="tel" class="form-control" id="telefone" name="telefone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->telefone }}" maxlength="10">
                             <div class="invalid-feedback">
                                 Informe um valor válido
                             </div>
@@ -65,7 +67,7 @@ require 'navbar.php';
                             <label for="email" class="form-label"><strong>E-mail: </strong></label>
                             <div class="input-group has-validation">
                                 <span class="input-group-text">@</span>
-                                <input readonly type="email" class="form-control" id="email" name="email" placeholder="voce@exemplo.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="<?= $rowUsuario["email"] ?>" maxlength="150">
+                                <input readonly type="email" class="form-control" id="email" name="email" placeholder="voce@exemplo.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $usuario->email }}" maxlength="150">
                                 <div class="invalid-feedback">
                                     Por favor, insira um endereço de e-mail válido para efetuar login
                                 </div>
@@ -132,7 +134,6 @@ require 'navbar.php';
 </div>
 
 <script>
-    //function validacaoUsuarios();
 
     document.addEventListener("DOMContentLoaded", function() {
         const dddInput = document.getElementById("ddd");
@@ -224,8 +225,6 @@ require 'navbar.php';
     });
 </script>
 
-<?php
-include 'mensagens.php';
-include 'footer.php';
-include 'js.php';
-?>
+@include ('mensagens');
+@include ('layouts.footer');
+@include ('layouts.js');

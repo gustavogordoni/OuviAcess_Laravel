@@ -9,7 +9,6 @@ if (autenticado()) {
     redireciona("login.php");
     die();
 }
-*/
 
 require '../database/conexao.php';
 
@@ -22,7 +21,7 @@ $cont =  $stmt->rowCount();
 
 $nome = explode(' ', $rowUsuario['nome']);
 $firstName = $nome[0];
-
+*/
 @endphp
 @include ('layouts.navbar')
 
@@ -30,7 +29,7 @@ $firstName = $nome[0];
     <main>
         <div class="py-3 text-center mt-4">
             <strong>
-                <h2>Informações do seu perfil <strong> <br>@php echo $firstName @endphp</strong></h2>
+                <h2>Informações do seu perfil <strong> <br>{{ $usuario->nome }}</strong></h2>
             </strong>
         </div>
 
@@ -39,24 +38,24 @@ $firstName = $nome[0];
                 <div class="row g-3">
                     <div class="col-md-12">
                         <label for="titulo" class="form-label"><strong>Nome completo: </strong></label>
-                        <input readonly type="text" class="form-control" id="titulo" value="@php echo $rowUsuario['nome'] @endphp" name="titulo">
+                        <input readonly type="text" class="form-control" id="titulo" value="{{ $usuario->nome }}" name="titulo">
                     </div>
 
                     <div class="col-md-3">
                         <label for="tipo" class="form-label"><strong>DDD:</strong></label>
-                        <input readonly type="text" class="form-control" id="tipo" value="@php echo $rowUsuario['ddd'] @endphp" name="tipo">
+                        <input readonly type="text" class="form-control" id="tipo" value="{{ $usuario->ddd }}" name="tipo">
                     </div>
 
                     <div class="col-md-9">
                         <label for="bairro" class="form-label"><strong>Telefone: </strong></label>
-                        <input readonly type="text" class="form-control" id="bairro" name="bairro" value="@php echo $rowUsuario['telefone'] @endphp">
+                        <input readonly type="text" class="form-control" id="telefone" name="telefone" value="{{ $usuario->telefone }}">
                     </div>
 
                     <div class="col-12">
                         <label for="email" class="form-label"><strong>E-mail: </strong></label>
                         <div class="input-group has-validation">
                             <span class="input-group-text">@</span>
-                            <input readonly type="email" class="form-control" id="email" name="email" value="@php echo $rowUsuario['email'] @endphp">
+                            <input readonly type="email" class="form-control" id="email" name="email" value="{{ $usuario->email }}">
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
@@ -66,7 +65,7 @@ $firstName = $nome[0];
                             <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="inicio.php">Voltar ao início</a>
                         </div>
                         <div class="col-lg-6">
-                            <a href="editar-perfil.php" class="w-100 btn btn-warning rounded-pill px-3 btn-lg" value="@php echo $id_usuario @endphp">
+                            <a href="edit-profile" class="w-100 btn btn-warning rounded-pill px-3 btn-lg" value="{{ $usuario->id }}">
                                 Alterar informações do perfil
                             </a>
                         </div>                        
@@ -110,6 +109,6 @@ $firstName = $nome[0];
     </div>
 </div>
 
-@include ('mensagens');
-@include ('layouts.footer');
-@include ('layouts.js');
+@include ('mensagens')
+@include ('layouts.footer')
+@include ('layouts.js')

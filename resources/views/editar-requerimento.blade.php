@@ -1,6 +1,7 @@
-<?php
-include 'header.php';
+@include ('layouts.header')
 
+@php
+/*
 $id_requerimento = filter_input(INPUT_GET, "editar", FILTER_SANITIZE_NUMBER_INT);
 
 if (autenticado()) {
@@ -41,9 +42,10 @@ if ($cont == 0) {
 if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requerimento"])) {
     include 'mensagens.php';
 }
+*/
+@endphp
 
-include 'navbar.php';
-?>
+@include ('layouts.navbar')
 
 <div class="container mx-auto">
     <main>
@@ -56,12 +58,13 @@ include 'navbar.php';
         <div class="row">
             <div class="col-11 mx-auto mb-4">
                 <form class="needs-validation" action="alterar-requerimento.php" method="POST" enctype="multipart/form-data">
+                @csrf
                     <div class="row g-3">
                         <div class="col-md-8">
-                            <input type="hidden" name="alterar" required id="alterar" value="<?= $id_requerimento ?>">
+                            <input type="hidden" name="alterar" required id="alterar" value="{{ $requerimento->id }}">
 
                             <label for="titulo" class="form-label" required id="label_titulo"><strong>Título do requerimento: </strong></label>
-                            <input type="text" class="form-control" required id="titulo" placeholder="Ex: Falta de rampas de acesso" name="titulo" value="<?= $rowRequeriemento['titulo'] ?>" pattern="[A-Za-zÀ-ÿ\s]+" title="Insira um título que contenha apenas letras. Nenhum outro tipo de caracter será válido" maxLength="150">
+                            <input type="text" class="form-control" required id="titulo" placeholder="Ex: Falta de rampas de acesso" name="titulo" value="{{ $requerimento->titulo }}" pattern="[A-Za-zÀ-ÿ\s]+" title="Insira um título que contenha apenas letras. Nenhum outro tipo de caracter será válido" maxLength="150">
                             <div class="invalid-feedback">
                                 Informe um título formado apenas por letras, tendo como mínimo de 10 caracteres.
                             </div>
@@ -70,28 +73,24 @@ include 'navbar.php';
                         <div class="col-md-4">
                             <label for="tipo" class="form-label"><strong>Tipo:</strong></label>
                             <select class="form-select" required id="tipo" name="tipo">
-                                <?php
-                                if ($rowRequeriemento['tipo'] == "Denúncia") { ?>
-                                    <option value="Denúncia">Denúncia</option>
-                                    <option value="Sugestão">Sugestão</option>
-                                <?php
-                                } elseif ($rowRequeriemento['tipo'] == "Sugestão") { ?>
-                                    <option value="Sugestão">Sugestão</option>
-                                    <option value="Denúncia">Denúncia</option>
-                                <?php
-                                } else { ?>
-                                    <option value="">Escolha uma opção</option>
-                                    <option value="Denúncia">Denúncia</option>
-                                    <option value="Sugestão">Sugestão</option>
-                                <?php
-                                }
-                                ?>
+                            @if ($requerimento->tipo == "Denúncia")
+                                <option value="Denúncia" selected>Denúncia</option>
+                                <option value="Sugestão">Sugestão</option>
+                            @elseif ($requerimento->tipo == "Sugestão")
+                                <option value="Sugestão" selected>Sugestão</option>
+                                <option value="Denúncia">Denúncia</option>
+                            @else
+                                <option value="" selected>Escolha uma opção</option>
+                                <option value="Denúncia">Denúncia</option>
+                                <option value="Sugestão">Sugestão</option>
+                            @endif
+
                             </select>
                         </div>
 
                         <div class="col-md-8">
                             <label for="cidade" class="form-label"><strong>Cidade: </strong></label>
-                            <input type="text" class="form-control" required id="cidade" placeholder="Ex: Votuporanga" name="cidade" value="<?= $rowRequeriemento['cidade'] ?>" pattern="[A-Za-zÀ-ÿ\s]+" maxLength="150">
+                            <input type="text" class="form-control" required id="cidade" placeholder="Ex: Votuporanga" name="cidade" value="{{ $requerimento->cidade }}" pattern="[A-Za-zÀ-ÿ\s]+" maxLength="150">
                             <div class="invalid-feedback">
                                 Será aceito apenas letras, tendo como mínimo 3 caracteres.
                             </div>
@@ -99,7 +98,7 @@ include 'navbar.php';
 
                         <div class="col-md-4">
                             <label for="cep" class="form-label"><strong>CEP: </strong></label>
-                            <input type="text" class="form-control" required id="cep" name="cep" value="<?= $rowRequeriemento['cep'] ?>" title="Digite o CEP no formato XX.XXX-XXX" placeholder="XX.XXX-XXX" pattern="\d{2}\.\d{3}-\d{3}" maxLength="10">
+                            <input type="text" class="form-control" required id="cep" name="cep" value="{{ $requerimento->cep }}" title="Digite o CEP no formato XX.XXX-XXX" placeholder="XX.XXX-XXX" pattern="\d{2}\.\d{3}-\d{3}" maxLength="10">
                             <div class="invalid-feedback">
                                 Informe o CEP no formato XX.XXX-XXX
                             </div>
@@ -107,7 +106,7 @@ include 'navbar.php';
 
                         <div class="col-md-6">
                             <label for="bairro" class="form-label"><strong>Bairro: </strong></label>
-                            <input type="text" class="form-control" required id="bairro" placeholder="Ex: Centro" name="bairro" value="<?= $rowRequeriemento['bairro'] ?>" pattern="[A-Za-zÀ-ÿ0-9\s]+" maxLength="150">
+                            <input type="text" class="form-control" required id="bairro" placeholder="Ex: Centro" name="bairro" value="{{ $requerimento->bairro }}" pattern="[A-Za-zÀ-ÿ0-9\s]+" maxLength="150">
                             <div class="invalid-feedback">
                                 Informe um bairro válido
                             </div>
@@ -115,13 +114,13 @@ include 'navbar.php';
 
                         <div class="col-md-6">
                             <label for="logradouro" class="form-label"><strong>Logradouro: </strong></label>
-                            <input type="text" class="form-control" required id="logradouro" placeholder="Ex: Rua Amazonas" name="logradouro" value="<?= $rowRequeriemento['logradouro'] ?>" pattern="[A-Za-zÀ-ÿ0-9\s]+" maxLength="150">
+                            <input type="text" class="form-control" required id="logradouro" placeholder="Ex: Rua Amazonas" name="logradouro" value="{{ $requerimento->logradouro }}" pattern="[A-Za-zÀ-ÿ0-9\s]+" maxLength="150">
                             <div class="invalid-feedback">
                                 Informe uma logradouro válida
                             </div>
                         </div>
-
-                        <?php
+                        {{--
+                        @php                        
                         $sql = "SELECT dados_arquivo, nome FROM arquivo a INNER JOIN requerimento r
                         ON a.id_requerimento = r.id_requerimento
                         WHERE a.id_requerimento = ? AND r.id_usuario = ?";
@@ -131,25 +130,26 @@ include 'navbar.php';
                         $cont = $stmt->rowCount();
 
                         if ($cont >= 1) {
-                        ?>
+                        @endphp
                             <div class="col-12 input-group mt-4">
                                 <label class="input-group-text px-5" for="arquivo"><strong>Foto do local:</strong></label>
                                 <input type="file" class="form-control" id="arquivo" accept="image/*" name="arquivo">
                             </div>
-                        <?php
+                        @php
                         } else {
-                        ?>
+                        @endphp
                             <div class="col-12 input-group mt-4">
                                 <label class="input-group-text px-5" for="arquivo"><strong>Adicionar foto do local:</strong></label>
                                 <input type="file" class="form-control" id="arquivo" accept="image/*" name="arquivo">
                             </div>
-                        <?php
+                        @php
                         }
-                        ?>
+                        @endphp
+                        --}}
 
                         <div class="col-12">
                             <label for="descricao" class="form-label"><strong>Descrição: </strong></label>
-                            <textarea class="form-control" placeholder="Insira uma descrição detalhada sobre o ambiente em discussão" required id="descricao" style="height: 130px" name="descricao" maxLength="2000"><?= $rowRequeriemento['descricao'] ?></textarea>
+                            <textarea class="form-control" placeholder="Insira uma descrição detalhada sobre o ambiente em discussão" required id="descricao" style="height: 130px" name="descricao" maxLength="2000">{{ $requerimento->descricao }}</textarea>
                             <div class="invalid-feedback">
                                 Insira uma descrição, com no mínimo 50 caracteres, sobre o ambiente em discussão
                             </div>
@@ -158,7 +158,7 @@ include 'navbar.php';
 
                         <div class="mt-5 col-12 row">
                             <div class="col-md-6 mb-3">
-                                <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="historico.php">Voltar ao histórico</a>
+                                <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="history">Voltar ao histórico</a>
                             </div>
                             <div class="col-md-6">
                                 <button class="w-100 btn btn-primary btn-lg rounded-pill px-3" type="submit">Enviar</button>
@@ -351,8 +351,6 @@ include 'navbar.php';
     });
 </script>
 
-<?php
-include 'mensagens.php';
-include 'footer.php';
-include 'js.php';
-?>
+@include ('mensagens')
+@include ('layouts.footer')
+@include ('layouts.js')

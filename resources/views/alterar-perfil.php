@@ -1,9 +1,6 @@
-<?php
-include 'header.php';
-
-
-$id_requerimento = filter_input(INPUT_POST, "alterar", FILTER_SANITIZE_NUMBER_INT);
-
+@include ('layouts.header')
+@php
+*/
 if (autenticado()) {
     $id_usuario = $_SESSION["id_usuario"];
 } elseif (!autenticado()) {
@@ -126,18 +123,19 @@ if ($result == true && $cont >= 1) {
 
 } else {
     $errorArray = $stmt->errorInfo();
-?>
+    */
+@endphp
     <div class="row d-flex align-items-center ps-4">
         <div class="col-md-6 text-center">
             <h1 class="mt-2 text-danger">Falha ao ao efetuar a alteração dos dodos do usuário</h1>
-            <p class="fs-5s"><?= $errorArray[2]; ?></p>
+            <p class="fs-5s">@php echo $errorArray[2]; @endphp</p>
             <h2><a href="historico.php" class="btn btn-outline-info p-2 px-4 rounded-pill fs-3 mt-2">Retornar ao histórico</a></h2>
 
         </div>
         <div class="mx-auto col-md-6">
             <img src="../image/warning.png" alt="" width="80%" class="d-block mx-auto">
         </div>
-    <?php
+    @php
 }
 include 'js.php';
-?>
+@endphp

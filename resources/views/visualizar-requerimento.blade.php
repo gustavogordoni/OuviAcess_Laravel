@@ -1,6 +1,7 @@
-<?php
-include 'header.php';
+@include ('layouts.header')
 
+@php
+/*
 $id_requerimento = filter_input(INPUT_GET, "visualizar", FILTER_SANITIZE_NUMBER_INT);
 
 if (autenticado()) {
@@ -61,15 +62,16 @@ $cont = $stmt->rowCount();
 if ($cont >= 1) {
     $_SESSION["id_requerimento"] = $id_requerimento;
 }
+*/
+@endphp
 
-require 'navbar.php';
-?>
+@include ('layouts.navbar')
 
 <div class="container">
     <main>
         <div class="py-3 text-center mt-4">
             <strong>
-                <h2>Detalhes do Requerimento <br> ID: <?= $id_requerimento ?></h2>
+                <h2>Detalhes do Requerimento <br> ID: {{ $requerimento->id }}</h2>
             </strong>
         </div>
 
@@ -78,47 +80,48 @@ require 'navbar.php';
                 <div class="row g-3">
                     <div class="col-md-8">
                         <label for="titulo" class="form-label"><strong>Título do requerimento: </strong></label>
-                        <input readonly type="text" class="form-control" id="titulo" value="<?= $rowRequeriemento['titulo'] ?>" name="titulo">
+                        <input readonly type="text" class="form-control" id="titulo" value="{{ $requerimento->titulo }}" name="titulo">
                     </div>
 
                     <div class="col-md-4">
                         <label for="tipo" class="form-label"><strong>Tipo:</strong></label>
-                        <input readonly type="text" class="form-control" id="tipo" value="<?= $rowRequeriemento['tipo'] ?>" name="tipo">
+                        <input readonly type="text" class="form-control" id="tipo" value="{{ $requerimento->tipo }}" name="tipo">
                     </div>
 
                     <div class="col-md-8">
                         <label for="bairro" class="form-label"><strong>Situação: </strong></label>
-                        <input readonly type="text" class="form-control" id="bairro" name="bairro" value="<?= $rowRequeriemento['situacao'] ?>">
+                        <input readonly type="text" class="form-control" id="bairro" name="bairro" value="{{ $requerimento->situacao }}">
                     </div>
 
                     <div class="col-md-4">
                         <label for="logradouro" class="form-label"><strong>Data: </strong></label>
-                        <input readonly type="text" class="form-control" id="logradouro" name="logradouro" value="<?= $rowRequeriemento['data'] ?>">
+                        <input readonly type="text" class="form-control" id="logradouro" name="logradouro" value="{{ $requerimento->data }}">
                     </div>
 
                     <div class="col-md-8">
                         <label for="cidade" class="form-label"><strong>Cidade: </strong></label>
-                        <input readonly type="text" class="form-control" id="cidade" name="cidade" value="<?= $rowRequeriemento['cidade'] ?>">
+                        <input readonly type="text" class="form-control" id="cidade" name="cidade" value="{{ $requerimento->cidade }}">
                     </div>
 
                     <div class="col-md-4">
                         <label for="cep" class="form-label"><strong>CEP: </strong></label>
-                        <input readonly type="text" class="form-control" id="cep" name="cep" value="<?= $rowRequeriemento['cep'] ?>">
+                        <input readonly type="text" class="form-control" id="cep" name="cep" value="{{ $requerimento->cep }}">
                     </div>
 
                     <div class="col-md-6">
                         <label for="bairro" class="form-label"><strong>Bairro: </strong></label>
-                        <input readonly type="text" class="form-control" id="bairro" name="bairro" value="<?= $rowRequeriemento['bairro'] ?>">
+                        <input readonly type="text" class="form-control" id="bairro" name="bairro" value="{{ $requerimento->bairro }}">
                     </div>
 
                     <div class="col-md-6">
                         <label for="logradouro" class="form-label"><strong>Logradouro: </strong></label>
-                        <input readonly type="text" class="form-control" id="logradouro" name="logradouro" value="<?= $rowRequeriemento['logradouro'] ?>">
+                        <input readonly type="text" class="form-control" id="logradouro" name="logradouro" value="{{ $requerimento->logradouro }}">
                     </div>
 
-                    <?php
+                    {{--
+                    @php
                     if ($cont >= 1) {
-                    ?>
+                    @endphp
                         <div class="col-md-12 mt-4">
                             <button type="button" class="d-block mx-auto w-25 btn btn-primary rounded-pill px-3 btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-image-fill" viewBox="0 0 16 16">
@@ -133,78 +136,81 @@ require 'navbar.php';
                             <div class="modal-dialog modal-fullscreen">
                                 <div class="modal-content">
                                     <div class="modal-header py-1">
-                                        <h3 class="d-block mx-auto cor_tema"><?= $dados["nome"] ?></h3>
+                                        <h3 class="d-block mx-auto cor_tema">@php echo $dados["nome"] @endphp</h3>
                                         <button type="button" class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body d-flex justify-content-center align-items-center">
-                                        <img src="mostrar-imagem.php" alt="Imagem: <?= $dados["nome"] ?>" class="h-100">
+                                        <img src="mostrar-imagem.php" alt="Imagem: @php echo $dados["nome"] @endphp" class="h-100">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <?php
+                    @php
                     }
-                    ?>
+                    @endphp
+                    --}}
 
                     <div class="col-12">
                         <label for="descricao" class="form-label"><strong>Descrição: </strong></label>
-                        <textarea readonly class="form-control" id="descricao" style="height: 150px" name="descricao"><?= $rowRequeriemento['descricao'] ?></textarea>
+                        <textarea readonly class="form-control" id="descricao" style="height: 150px" name="descricao">{{ $requerimento->descricao }}</textarea>
                     </div>
 
-                    <?php
+                    {{--
+                    @php
                     if (isset($rowRequeriemento['resposta'])) {
-                    ?>
+                    @endphp
 
                         <div class="col-12 border p-4 rounded-5 mt-5">
-                            <?php
+                            @php
                             if (isset($rowRequeriemento['id_administrador'])) {
-                            ?>
-                                <h3 class="mb-3">Administrador: <a class="cor_tema link-underline link-underline-opacity-0" href="visualizar-administrador.php?id=<?= $rowRequeriemento['id_administrador'] ?>"><?= $rowRequeriemento['administrador'] ?>
+                            @endphp
+                                <h3 class="mb-3">Administrador: <a class="cor_tema link-underline link-underline-opacity-0" href="visualizar-administrador.php?id=@php echo $rowRequeriemento['id_administrador'] @endphp">@php echo $rowRequeriemento['administrador'] @endphp
                                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
                                             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
                                         </svg>
                                     </a>
                                 </h3>
-                            <?php
+                            @php
                             }
-                            ?>
+                            @endphp
 
                             <label for="situacao_label" class="form-label"><strong>Situação definida como: </strong>
-                                <?php
-                                if ($rowRequeriemento['situacao'] == "Pendente") {
-                                ?> <strong class="text-secondary"><?= strtoupper($rowRequeriemento['situacao']) ?></strong>
-                                <?php
-                                } elseif ($rowRequeriemento['situacao'] == "Em andamento") {
-                                ?> <strong class="text-primary"><?= strtoupper($rowRequeriemento['situacao']) ?></strong>
-                                <?php
-                                } elseif ($rowRequeriemento['situacao'] == "Informações incompletas") {
-                                ?> <strong class="text-warning"><?= strtoupper($rowRequeriemento['situacao']) ?></strong>
-                                <?php
-                                } elseif ($rowRequeriemento['situacao'] == "Concluído") {
-                                ?> <strong class="text-success"><?= strtoupper($rowRequeriemento['situacao']) ?></strong>
-                                <?php
-                                } elseif ($rowRequeriemento['situacao'] == "Recusado") {
-                                ?> <strong class="text-danger"><?= strtoupper($rowRequeriemento['situacao']) ?></strong>
-                                <?php
+                                @php
+                                if ({{ $requerimento->situacao }} == "Pendente") {
+                                @endphp <strong class="text-secondary">@php echo strtoupper({{ $requerimento->situacao }}) @endphp</strong>
+                                @php
+                                } elseif ({{ $requerimento->situacao }} == "Em andamento") {
+                                @endphp <strong class="text-primary">@php echo strtoupper({{ $requerimento->situacao }}) @endphp</strong>
+                                @php
+                                } elseif ({{ $requerimento->situacao }} == "Informações incompletas") {
+                                @endphp <strong class="text-warning">@php echo strtoupper({{ $requerimento->situacao }}) @endphp</strong>
+                                @php
+                                } elseif ({{ $requerimento->situacao }} == "Concluído") {
+                                @endphp <strong class="text-success">@php echo strtoupper({{ $requerimento->situacao }}) @endphp</strong>
+                                @php
+                                } elseif ({{ $requerimento->situacao }} == "Recusado") {
+                                @endphp <strong class="text-danger">@php echo strtoupper({{ $requerimento->situacao }}) @endphp</strong>
+                                @php
                                 }
-                                ?>
+                                @endphp
                             </label>
                             <br>
                             <label for="resposta" class="form-label"><strong>Resposta: </strong></label>
-                            <textarea readonly class="form-control" id="resposta" style="height: 150px" name="resposta"><?= $rowRequeriemento['resposta'] ?></textarea>
+                            <textarea readonly class="form-control" id="resposta" style="height: 150px" name="resposta">@php echo $rowRequeriemento['resposta'] @endphp</textarea>
                         </div>
-                    <?php
+                    @php
                     }
-                    ?>
+                    @endphp
+                    --}}
 
                     <div class="mt-4 col-12 row">
                         <div class="col-md-6 mb-3">
-                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="historico.php">Voltar ao histórico</a>
+                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="history">Voltar ao histórico</a>
                         </div>
                         <div class="col-md-6">
                             <form action="editar-requerimento.php" method="GET" class="form my-auto">
-                                <button class="w-100 btn btn-warning rounded-pill px-3 btn-lg" type="submit" value="<?= $id_requerimento ?>" name="editar">
+                                <button class="w-100 btn btn-warning rounded-pill px-3 btn-lg" type="submit" value="{{ $requerimento->id }}" name="editar">
                                     Alterar informações
                                 </button>
                             </form>
@@ -218,7 +224,6 @@ require 'navbar.php';
     </main>
 </div>
 
-<?php
-require 'footer.php';
-require 'js.php';
-?>
+
+@include ('layouts.footer')
+@include ('layouts.js')

@@ -44,6 +44,6 @@ return new class extends Migration
      */
     public function down()
     {
-        chema::dropIfExists('requerimentos');
+        Schema::dropIfExists('requerimentos');
     }
 };
