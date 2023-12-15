@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/home');
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserController;
@@ -24,35 +22,62 @@ use App\Http\Controllers\AdministratorController;
 
 /* Navegação pelas Páginas */
 
+/* Inicio */
 Route::view('/home', 'inicio')->name('home');
 
+/* Autenticação */
 Route::view('/authentication', 'login')->name('authentication');
 
+/* Requerimentos */
 Route::get('/request', [RequestController::class, 'index'])->name('request');
 
-Route::get('/history', [RequestController::class, 'historico'])->name('history');
+/* Histórico */
+Route::get('/history/{order?}', [RequestController::class, 'create'])->name('history');
 
-//Route::get('/history/{$order}', [RequestController::class, 'show'])->name('history-order');
-
+/* Forumulário de cadastro de usuário */
 Route::get('/register', [UserController::class, 'index'])->name('register');
 
-Route::get('/profile', [UserController::class, 'create'])->name('profile');
+/*****************************************************************************************************/
 
-Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile');
+/* Perfil */
+Route::get('/profile', [UserController::class, 'create'])->name('profile')
+    ->middleware('auth');
 
-Route::get('/delete-profile', [UserController::class, 'edit'])->name('delete-profile');
+/* Editar perfil */
+Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile')
+    ->middleware('auth');
 
-Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request');
+/* Atualizar perfil */
+Route::post('/update-profile', [UserController::class, 'update'])->name('update-profile')
+    ->middleware('auth');
 
-Route::get('/edit-request/{id}', [RequestController::class, 'edit'])->name('edit-request');
+/* Deletar perfil */
+Route::get('/delete-profile', [UserController::class, 'edit'])->name('delete-profile')
+    ->middleware('auth');
 
-Route::get('/destoy-request/{id}', [RequestController::class, 'destroy'])->name('destoy-request');
+/* Exibir requerimento */
+Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request')
+    ->middleware('auth');
+
+/* Editar requerimento */
+Route::get('/edit-request/{id}', [RequestController::class, 'edit'])->name('edit-request')
+    ->middleware('auth');
+
+/* Deletar requerimento */
+Route::post('/destoy-request', [RequestController::class, 'destroy'])->name('destoy-request')
+    ->middleware('auth');
+
+/*****************************************************************************************************/
 
 /* Autenticação Usuário */
 Route::post('/auth', [AuthenticationController::class, 'auth'])->name('auth');
 
+/* Logout Usuário */
+Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout')
+    ->middleware('auth');
+
 /* Create Usuário */
-Route::post('/store-user', [UserController::class, 'store'])->name('store-user');;
+Route::post('/store-user', [UserController::class, 'store'])->name('store-user');
 
 /* Create Requerimento */
-Route::post('/store-request', [RequestController::class, 'store'])->name('store-request');;
+Route::post('/store-request', [RequestController::class, 'store'])->name('store-request');

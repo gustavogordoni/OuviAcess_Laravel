@@ -25,7 +25,7 @@ if (isset($_SESSION["error_senha"])) {
       <label for="email" class="ms-2">Endereço de email</label>
     </div>
     <div class="form-floating col-md-7">
-      <input type="password" class="form-control" required id="floatingPassword" placeholder="Password" name="senha">
+      <input type="password" class="form-control" required id="floatingPassword" placeholder="Password" name="password">
       <label for="floatingPassword" class="ms-2">Senha</label>
     </div>
 
@@ -41,8 +41,12 @@ if (isset($_SESSION["error_senha"])) {
   </div>
 </div>
 
+@if($errors->any())
+  @php Session::put('message', ['error_authentication' => $errors->all()[0]]); @endphp
+@endif
+
 @if($mensagens = Session::get('message'))
-        @include('layouts.message', ['mensagens' => $mensagens])           
-    @endif
+  @include('layouts.message', ['mensagens' => $mensagens])           
+@endif
 
 @endsection

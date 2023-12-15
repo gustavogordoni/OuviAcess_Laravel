@@ -33,7 +33,7 @@ $firstName = $nome[0];
     <main>
         <div class="py-3 text-center mt-4">
             <strong>
-                <h2>Informações do seu perfil <strong> <br>{{ $usuario->nome }}</strong></h2>
+                <h2>Informações do seu perfil <strong> <br>{{ $usuario->name }}</strong></h2>
             </strong>
         </div>
 
@@ -42,7 +42,7 @@ $firstName = $nome[0];
                 <div class="row g-3">
                     <div class="col-md-12">
                         <label for="titulo" class="form-label"><strong>Nome completo: </strong></label>
-                        <input readonly type="text" class="form-control" id="titulo" value="{{ $usuario->nome }}" name="titulo">
+                        <input readonly type="text" class="form-control" id="titulo" value="{{ $usuario->name }}" name="titulo">
                     </div>
 
                     <div class="col-md-3">
@@ -52,7 +52,7 @@ $firstName = $nome[0];
 
                     <div class="col-md-9">
                         <label for="bairro" class="form-label"><strong>Telefone: </strong></label>
-                        <input readonly type="text" class="form-control" id="telefone" name="telefone" value="{{ $usuario->telefone }}">
+                        <input readonly type="text" class="form-control" id="telefone" name="telefone" value="{{ $usuario->phone }}">
                     </div>
 
                     <div class="col-12">

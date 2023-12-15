@@ -30,7 +30,7 @@ $cont =  $stmt->rowCount();
     <main>
         <div class="py-3 text-center mt-4">
             <strong>
-                <h2>Olá <strong>{{ $usuario->nome }}</strong> <span class="fs-2">&#128075;</span></h2>
+                <h2>Olá <strong>{{ $usuario->name }}</strong> <span class="fs-2">&#128075;</span></h2>
             </strong>
         </div>
 
@@ -42,7 +42,7 @@ $cont =  $stmt->rowCount();
 
                         <div class="col-sm-12">
                             <label for="nome" class="form-label" id="label_nome"><strong>Nome completo: </strong></label>
-                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="{{ $usuario->nome }}" maxlength="150">
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="{{ $usuario->name }}" maxlength="150">
                             <div class="invalid-feedback">
                                 Informe seu nome completo
                             </div>
@@ -59,7 +59,7 @@ $cont =  $stmt->rowCount();
 
                         <div class="col-sm-9">
                             <label for="telefone" class="form-label"><strong>Número de telefone: </strong></label>
-                            <input type="tel" class="form-control" id="telefone" name="telefone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->telefone }}" maxlength="10">
+                            <input type="tel" class="form-control" id="telefone" name="telefone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->phone }}" maxlength="10">
                             <div class="invalid-feedback">
                                 Informe um valor válido
                             </div>

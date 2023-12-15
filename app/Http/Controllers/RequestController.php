@@ -22,10 +22,32 @@ class RequestController extends Controller
      * Exibir informações em um formulário
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($order = null)
     {
-        //
-    }
+        if(auth()->check()){
+            if($order == "date"){
+            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('data', 'asc')->get();
+            $order= ['date' => 'asc'];
+
+            }elseif($order == "title"){
+            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('titulo', 'asc')->get();
+            $order=['title' => 'asc'];
+
+            }elseif($order == "id"){
+            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('id', 'asc')->get();
+            $order=['id' => 'asc'];
+
+            }else{
+            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('data', 'asc')->get();
+            $order= ['date' => 'asc'];
+            }
+            
+            return view('historico', compact('requerimentos', 'order'));
+        }else{
+            $message = ['history' => 'guest'];
+            return view('historico', compact('message'));
+        }
+    }    
 
     /**
      * Store a newly created resource in storage.
@@ -97,19 +119,10 @@ class RequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
-    }
-
-    /* MINHAS FUNÇÕES */
-    public function historico(){
-        $requerimentos = Requerimento::all();
-        return view('historico', compact('requerimentos'));
-    }
-
-    public function visualizar_requerimento($id){
-        
-        
+        $requerimento = Requerimento::find($request->id);
+        $requerimento->delete();
+        return redirect()->route('history')->with('message', ['success_request' => 'destroy']);
     }
 }

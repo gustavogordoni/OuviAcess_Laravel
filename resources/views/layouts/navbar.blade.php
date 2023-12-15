@@ -1,5 +1,4 @@
 @php
-
 $value = "Dark";
 $class = "btn-dark";
 $tema = filter_input(INPUT_POST, "tema", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -122,9 +121,7 @@ setcookie("tema", $tema, $tempo_expiracao, "/");
         <br>
 
         <div class="d-flex my-auto justify-content-evenly">
-          @php
-          if (!autenticado()) {
-          @endphp
+          @guest
             <a href="{{ route('authentication') }}"><button type="button" class="btn btn-outline-primary mx-1 rounded-pill">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z" />
@@ -132,7 +129,6 @@ setcookie("tema", $tema, $tempo_expiracao, "/");
                 </svg><br>
                 Login
               </button></a>
-
             @php
             if (basename($_SERVER["PHP_SELF"]) == "cadastro-usuario") {
               $btn_cadastro = "btn-danger";
@@ -146,16 +142,15 @@ setcookie("tema", $tema, $tempo_expiracao, "/");
                 </svg><br>
                 Cadastre-se
               </button></a>
-
-          @php
-          } elseif (autenticado()) {
-
-            if (basename($_SERVER["PHP_SELF"]) == "perfil" || basename($_SERVER["PHP_SELF"]) == "editar-perfil") {
-              $btn_perfil = "btn-primary";
-            } elseif (basename($_SERVER["PHP_SELF"]) != "perfil") {
-              $btn_perfil = "btn-outline-primary";
-            }
-          @endphp
+          @endguest
+          @auth
+            @php
+              if (basename($_SERVER["PHP_SELF"]) == "perfil" || basename($_SERVER["PHP_SELF"]) == "editar-perfil") {
+                $btn_perfil = "btn-primary";
+              } elseif (basename($_SERVER["PHP_SELF"]) != "perfil") {
+                $btn_perfil = "btn-outline-primary";
+              }
+            @endphp
             <a href="{{ route('profile') }}"><button type="button" class="btn @php echo $btn_perfil @endphp mx-1 rounded-pill">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
@@ -163,7 +158,6 @@ setcookie("tema", $tema, $tempo_expiracao, "/");
                 </svg><br>
                 Perfil
               </button></a>
-
             <a href="{{ route('logout') }}"><button type="button" class="btn btn-outline-danger mx-1 rounded-pill">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right mx-auto" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
@@ -171,9 +165,7 @@ setcookie("tema", $tema, $tempo_expiracao, "/");
                 </svg><br>
                 Sair
               </button></a>
-          @php
-          }
-          @endphp
+          @endauth
 
           <form action="" method="POST" class="my-auto">
             <button value="@php echo $value @endphp" type="submit" class="btn @php echo $class @endphp mx-1 rounded-circle p-2" id="alterar_tema" name="tema">@php echo $Dark_Light @endphp</button>

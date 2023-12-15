@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Usuario;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Requerimento>
@@ -18,7 +18,7 @@ class RequerimentoFactory extends Factory
     public function definition()
     {
         return [
-            'id_usuario' => Usuario::pluck('id')->random(),
+            'id_usuario' => User::pluck('id')->random(),
             'titulo' => $this->faker->word,
             'tipo' => $this->faker->randomElement(['Denúncia', 'Sugestão']),
             'situacao' => $this->faker->randomElement(['Pendente', 'Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']),

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             //$table->foreignId('id_usuario')->nullable()->constrained('usuarios');
             $table->unsignedBigInteger('id_usuario')->nullable();
-            $table->foreign('id_usuario')->references('id')->on('usuarios');
+            $table->foreign('id_usuario')->references('id')->on('users');
             
             $table->string('titulo');
             $table->string('tipo');

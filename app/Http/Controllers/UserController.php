@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Usuario;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -24,8 +24,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        $usuario = Usuario::all()->first();
-        return view('perfil', compact('usuario'));
+        $usuario = auth()->user();
+
+        if ($usuario) {
+            return view('perfil', compact('usuario'));
+        } else {
+            return redirect()->route('authentication')->with('message', ['guest_acess' => 'perfil']);
+        }
     }
 
     /**
@@ -36,13 +41,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $usuario = new Usuario;
+        $usuario = new User;
 
-        $usuario->nome = $request->nome;
+        $usuario->name = $request->nome;
         $usuario->ddd = $request->ddd;
-        $usuario->telefone = $request->telefone;
+        $usuario->phone = $request->telefone;
         $usuario->email = $request->email;
-        $usuario->senha = $request->senha;
+        $usuario->password = bcrypt($request->senha);
 
         $usuario->save();
 
@@ -69,7 +74,7 @@ class UserController extends Controller
      */
     public function edit()
     {
-        $usuario = Usuario::all()->first();
+        $usuario = User::all()->first();
         return view('editar-perfil', compact('usuario'));
     }
 
