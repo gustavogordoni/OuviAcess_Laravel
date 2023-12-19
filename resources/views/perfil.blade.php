@@ -66,7 +66,7 @@ $firstName = $nome[0];
 
                     <div class="mt-4 col-12 row">
                         <div class="col-lg-6 mb-3">
-                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="home">Voltar ao início</a>
+                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="{{ route('index') }}">Voltar ao início</a>
                         </div>
                         <div class="col-lg-6">
                             <a href="edit-profile" class="w-100 btn btn-warning rounded-pill px-3 btn-lg" value="{{ $usuario->id }}">

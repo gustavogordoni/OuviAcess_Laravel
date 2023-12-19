@@ -1,4 +1,5 @@
 @extends('layouts.html')
+@section('title', '- Edit request')
 
 @section('body')
 @include ('layouts.funcoes')

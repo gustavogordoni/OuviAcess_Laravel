@@ -83,9 +83,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $usuario = User::find(auth()->user()->id);
+
+        $usuario->update([
+            'name' => $request->name,
+            'ddd' => $request->ddd,
+            'phone' => $request->phone,
+            //'email' => $request->cep,
+        ]);
+
+        return redirect()->route('profile')->with('message', ['success_profile' => 'update']);
     }
 
     /**

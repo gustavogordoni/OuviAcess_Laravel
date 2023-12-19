@@ -145,14 +145,6 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
           </div>
 
             <div class="col-12 form-check d-flex justify-content-center">
-              @php if (!autenticado()) {
-                $checked  = 'checked disabled';
-              } elseif (autenticado()) {
-                $checked = 'value = "true" ';
-              } elseif (autenticado() && $anonimo == true) {
-                $checked = 'value = "true" checked';
-              } @endphp
-
               <input class="form-check-input" type="checkbox" id="anonimo" name="anonimo" @guest checked disabled @endguest>
               <label class="form-check-label ms-1" for="anonimo">
                 Enviar <strong>anonimamente</strong>

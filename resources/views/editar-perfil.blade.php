@@ -1,4 +1,5 @@
 @extends('layouts.html')
+@section('title', '- Edit profile')
 
 @section('body')
 @include ('layouts.funcoes')
@@ -38,6 +39,7 @@ $cont =  $stmt->rowCount();
             <div class="col-11 mx-auto mb-4">
 
                 <form class="needs-validation" action="{{ route('update-profile')}}" method="POST">
+                    @csrf
                     <div class="row g-3">
 
                         <div class="col-sm-12">
@@ -87,7 +89,7 @@ $cont =  $stmt->rowCount();
                             </div>                            
                         </div>
                         <div class="mt-1 col-12 row">
-                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="profile">Voltar ao perfil</a>
+                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="{{ route('profile') }}">Voltar ao perfil</a>
                         </div>
 
                 </form>
@@ -140,8 +142,8 @@ $cont =  $stmt->rowCount();
     document.addEventListener("DOMContentLoaded", function() {
         const dddInput = document.getElementById("ddd");
         const labelDdd = document.querySelector("label[for='ddd']");
-        const telefoneInput = document.getElementById("telefone");
-        const labelTelefone = document.querySelector("label[for='telefone']");
+        const telefoneInput = document.getElementById("phone");
+        const labelTelefone = document.querySelector("label[for='phone']");
 
         dddInput.addEventListener("input", function() {
             const inputValue = dddInput.value.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
@@ -196,8 +198,8 @@ $cont =  $stmt->rowCount();
         }
     }
 
-    const nomeInput = document.getElementById("nome");
-    const labelNome = document.querySelector("label[for='nome']");
+    const nomeInput = document.getElementById("name");
+    const labelNome = document.querySelector("label[for='name']");
 
     nomeInput.addEventListener("keydown", function(event) {
         if (event.key >= '0' && event.key <= '9') {

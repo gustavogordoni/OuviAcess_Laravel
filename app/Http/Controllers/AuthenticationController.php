@@ -36,4 +36,12 @@ class AuthenticationController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('index')->with('message', ['logout' => 'success']);
     }
+
+    public function theme(Request $request){       
+        
+        $tempo_expiracao = time() + (60 * 60 * 24);
+        setcookie("tema", $request->theme, $tempo_expiracao, "/");
+        
+        return redirect()->back();
+    }
 }

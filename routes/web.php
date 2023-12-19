@@ -23,6 +23,8 @@ use App\Http\Controllers\AdministratorController;
 /* Inicio */
 Route::view('/', 'inicio')->name('index');
 
+Route::post('/theme', [AuthenticationController::class, 'theme'])->name('theme');
+
 /* Autenticação */
 Route::view('/authentication', 'login')->name('authentication');
 

@@ -252,11 +252,20 @@
                 @foreach($requerimentos as $requerimento)
 
                 <div class="col">
-                    <div class="card">
-                        <img src="../image/vaga_acessibilidade.jpg" class="card-img-top" alt="...">
+                    <div class="card d-flex flex-column h-100">
+                        @php
+                            $arquivo = App\Models\Arquivo::where('id_requerimento', $requerimento->id)->first();
+                        @endphp
+                
+                        @if($arquivo)
+                            <img src="/image/imageRequest/{{ $arquivo->name }}" class="card-img-top img-fluid" alt="...">
+                        @else
+                            <img src="/image/vaga_acessibilidade.jpg" class="card-img-top img-fluid" alt="Imagem Padrão">
+                        @endif
+                
                         <div class="card-body">
                             <strong><h5 class="card-title">{{ $requerimento->titulo }}</h5></strong>
-                        </div>                
+                        </div>                     
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">{{ $requerimento->tipo }}</li>
                             <li class="list-group-item">                        
@@ -274,7 +283,7 @@
                             </li>
                             <li class="list-group-item">{{ \Carbon\Carbon::parse($requerimento->data)->format('d/m/Y') }}</li>
                         </ul>    
-                        <div class="card-footer text-center">
+                        <div class="card-footer text-center mt-auto">
                             <a href ="{{ route('show-request', $requerimento->id) }}" class="btn btn-outline-primary my-auto mx-1 rounded-circle p-2" name="visualizar">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />

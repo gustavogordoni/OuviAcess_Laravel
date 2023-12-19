@@ -77,10 +77,7 @@ class RequestController extends Controller
         if(auth()->check() && empty($request->anonimo)){
             $requerimento['id_usuario'] = auth()->user()->id;
 
-        }elseif(auth()->check() && !empty($request->anonimo)){
-            $requerimento['id_usuario'] = null;
-        }
-        else{
+        }else{
             $requerimento['id_usuario'] = null;
         } 
 
