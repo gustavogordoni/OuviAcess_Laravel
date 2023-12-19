@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/home');
-
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RequestController;
@@ -23,7 +21,7 @@ use App\Http\Controllers\AdministratorController;
 /* Navegação pelas Páginas */
 
 /* Inicio */
-Route::view('/home', 'inicio')->name('home');
+Route::view('/', 'inicio')->name('index');
 
 /* Autenticação */
 Route::view('/authentication', 'login')->name('authentication');
@@ -40,32 +38,34 @@ Route::get('/register', [UserController::class, 'index'])->name('register');
 /*****************************************************************************************************/
 
 /* Perfil */
-Route::get('/profile', [UserController::class, 'create'])->name('profile')
-    ->middleware('auth');
+Route::get('/profile', [UserController::class, 'create'])->name('profile');
 
 /* Editar perfil */
-Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile')
-    ->middleware('auth');
+Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile');
 
 /* Atualizar perfil */
-Route::post('/update-profile', [UserController::class, 'update'])->name('update-profile')
-    ->middleware('auth');
+Route::post('/update-profile', [UserController::class, 'update'])->name('update-profile');
 
 /* Deletar perfil */
-Route::get('/delete-profile', [UserController::class, 'edit'])->name('delete-profile')
-    ->middleware('auth');
+Route::get('/delete-profile', [UserController::class, 'destroy'])->name('delete-profile');
+
+/* Editar senha */
+Route::get('/edit-password', [UserController::class, 'edit'])->name('edit-password');
+
+/* Atualizar senha */
+Route::post('/update-password', [UserController::class, 'update'])->name('update-password');
 
 /* Exibir requerimento */
-Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request')
-    ->middleware('auth');
+Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request');
 
 /* Editar requerimento */
-Route::get('/edit-request/{id}', [RequestController::class, 'edit'])->name('edit-request')
-    ->middleware('auth');
+Route::get('/edit-request/{id}', [RequestController::class, 'edit'])->name('edit-request');
+
+/* Atualizar requerimento */
+Route::post('/update-request', [RequestController::class, 'update'])->name('update-request');
 
 /* Deletar requerimento */
-Route::post('/destoy-request', [RequestController::class, 'destroy'])->name('destoy-request')
-    ->middleware('auth');
+Route::post('/destoy-request', [RequestController::class, 'destroy'])->name('destoy-request');
 
 /*****************************************************************************************************/
 
@@ -73,8 +73,7 @@ Route::post('/destoy-request', [RequestController::class, 'destroy'])->name('des
 Route::post('/auth', [AuthenticationController::class, 'auth'])->name('auth');
 
 /* Logout Usuário */
-Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout')
-    ->middleware('auth');
+Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
 /* Create Usuário */
 Route::post('/store-user', [UserController::class, 'store'])->name('store-user');

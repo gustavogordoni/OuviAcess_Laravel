@@ -8,11 +8,15 @@ html {
     scroll-behavior: smooth;
 }
 
-.carousel-item img {
+.home img {
     width: 100%;
     /* Define a largura das imagens como 100% */
     height: 85vh;
     /* Permite que a altura seja ajustada proporcionalmente à largura */
+}
+
+.widh_100 img{
+    width: 100%;
 }
 
 /* Sombreado*/

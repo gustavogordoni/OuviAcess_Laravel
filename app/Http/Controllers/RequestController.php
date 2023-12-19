@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Requerimento;
+use App\Models\Arquivo;
+use Illuminate\Auth\Access\Gate;
 
 class RequestController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth')->only(['edit', 'update', 'destroy']);
+    }
+        
     /**
      * Display a listing of the resource.
      * Listar as informações
@@ -24,6 +31,12 @@ class RequestController extends Controller
      */
     public function create($order = null)
     {
+        if($order == "cards"){
+            $layout = "cards";
+        }else{
+            $layout = "table";
+        }
+
         if(auth()->check()){
             if($order == "date"){
             $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('data', 'asc')->get();
@@ -41,8 +54,10 @@ class RequestController extends Controller
             $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('data', 'asc')->get();
             $order= ['date' => 'asc'];
             }
+
+            //Gate::authorize('manipularRequerimento', $requerimentos);
             
-            return view('historico', compact('requerimentos', 'order'));
+            return view('historico', compact('requerimentos', 'order', 'layout'));
         }else{
             $message = ['history' => 'guest'];
             return view('historico', compact('message'));
@@ -57,23 +72,53 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        $requerimento = new Requerimento;
-  
-        $requerimento->titulo = $request->titulo;
-        $requerimento->tipo = $request->tipo;
-        $requerimento->situacao = "Pendente";
+        $requerimento = $request->all();
 
+        if(auth()->check() && empty($request->anonimo)){
+            $requerimento['id_usuario'] = auth()->user()->id;
+
+        }elseif(auth()->check() && !empty($request->anonimo)){
+            $requerimento['id_usuario'] = null;
+        }
+        else{
+            $requerimento['id_usuario'] = null;
+        } 
+
+        $requerimento['situacao'] = "Pendente";
         date_default_timezone_set('America/Sao_Paulo');
-        $requerimento->data = date('d/m/Y');
+        $requerimento['data'] = date('d/m/Y');       
+        
+        $requerimento = Requerimento::create($requerimento);
 
-        $requerimento->cidade = $request->cidade;
-        $requerimento->cep = $request->cep;
-        $requerimento->bairro = $request->bairro;
-        $requerimento->logradouro = $request->logradouro;
-        $requerimento->descricao = $request->descricao;
-  
-        $requerimento->save();
-  
+        $idRequerimento = $requerimento->id;
+
+        for ($i = 0; $i < 5; $i++) {
+            $inputName = "image_$i";
+        
+            if ($request->hasFile($inputName) && $request->file($inputName)->isValid()) {
+                $requestImage = $request->$inputName;
+                $extension = $requestImage->extension();
+                $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+                $requestImage->move(public_path('image/imageRequest'), $imageName);
+        
+                $arquivo = new Arquivo;
+                $arquivo->id_requerimento = $idRequerimento; 
+                $arquivo->name = $imageName;
+                $arquivo->save();
+            } 
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $requestImage = $request->image;
+                $extension = $requestImage->extension();
+                $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+                $requestImage->move(public_path('image/imageRequest'), $imageName);
+            
+                $arquivo = new Arquivo;
+                $arquivo->id_requerimento = $idRequerimento; 
+                $arquivo->name = $imageName;
+                $arquivo->save();
+            }
+        }        
+
         return redirect()->route('history')->with('message', ['success_request' => 'store']);
     }
 
@@ -84,9 +129,12 @@ class RequestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {    
-        $requerimento = Requerimento::where('id', $id)->first();               
-        return view('visualizar-requerimento', compact('requerimento'));        
+    {            
+        $arquivos = Arquivo::where('id_requerimento', $id)->get();
+
+        $requerimento = Requerimento::where('id', $id)->first();    
+        return view('visualizar-requerimento', compact('requerimento', 'arquivos'));
+       
     }
 
     /**
@@ -97,8 +145,10 @@ class RequestController extends Controller
      */
     public function edit($id)
     {
+        $arquivos = Arquivo::where('id_requerimento', $id)->get();
+
         $requerimento = Requerimento::where('id', $id)->first();               
-        return view('editar-requerimento', compact('requerimento'));
+        return view('editar-requerimento', compact('requerimento', 'arquivos'));
     }
 
     /**
@@ -108,10 +158,45 @@ class RequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
-    }
+        $requerimento = Requerimento::find($request->id);
+
+        $requerimento->update([
+            'titulo' => $request->titulo,
+            'tipo' => $request->tipo,
+            'cidade' => $request->cidade,
+            'cep' => $request->cep,
+            'bairro' => $request->bairro,
+            'logradouro' => $request->logradouro,
+            'descricao' => $request->descricao,
+        ]);
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $requestImage = $request->image;
+            $extension = $requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+    
+            $requestImage->move(public_path('image/imageRequest'), $imageName);
+    
+            // Encontrar o arquivo existente associado ao requerimento
+            $arquivo = Arquivo::where('id_requerimento', $request->id)->first();
+    
+            // Se o arquivo existir, atualize-o; caso contrário, crie um novo
+            if ($arquivo) {
+                $arquivo->update([
+                    'name' => $imageName,
+                ]);
+            } else {
+                $arquivo = new Arquivo;
+                $arquivo->id_requerimento = $request->id; 
+                $arquivo->name = $imageName;
+                $arquivo->save();
+            }
+        }   
+
+            return redirect()->route('history')->with('message', ['success_request' => 'update']);
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -121,6 +206,8 @@ class RequestController extends Controller
      */
     public function destroy(Request $request)
     {
+        Arquivo::where('id_requerimento', $request->id)->delete();
+
         $requerimento = Requerimento::find($request->id);
         $requerimento->delete();
         return redirect()->route('history')->with('message', ['success_request' => 'destroy']);

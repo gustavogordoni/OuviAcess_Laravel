@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class AuthenticationController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth')->only('logout');
+    }
+
     public function auth(Request $request){
         $credenciais = $request->validate([
             'email' => ['required', 'email'],
@@ -19,9 +22,9 @@ class AuthenticationController extends Controller
         ]  
     );
 
-    if(Auth::attempt($credenciais)){
+    if(Auth::attempt($credenciais, $request->remember)){
         $request->session()->regenerate();
-        return redirect()->intended('home')->with('message', ['success_authentication' => auth()->user()->name]);
+        return redirect()->route('index')->with('message', ['success_authentication' => auth()->user()->name]);
     }else{
         return redirect()->route('authentication')->with('message', ['error_authentication' => 'any']);
     } 
@@ -31,6 +34,6 @@ class AuthenticationController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('home')->with('message', ['logout' => 'success']);
+        return redirect()->route('index')->with('message', ['logout' => 'success']);
     }
 }

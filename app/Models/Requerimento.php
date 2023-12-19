@@ -9,6 +9,21 @@ class Requerimento extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id_usuario',
+        'titulo',
+        'tipo',
+        'situacao',
+        'data',
+        'descricao',
+        'cep',
+        'cidade',
+        'bairro',
+        'logradouro',
+        'resposta',
+        'id_administrador',
+    ];
+
     public function usuario(){
         return $this->belongsTo(User::class, 'id_usuario');
     }

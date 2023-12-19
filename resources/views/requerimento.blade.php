@@ -62,22 +62,21 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
             <div class="col-md-4">
               <label for="tipo" class="form-label"><strong>Tipo:</strong></label>
               <select class="form-select" required id="tipo" name="tipo" title="Selecione um tipo de requerimento">
-                @php
-                if (!isset($tipo) || empty($tipo)) { @endphp
+
+                @if (!isset($tipo) || empty($tipo))
                   <option value="">Escolha uma opção</option>
                   <option value="Denúncia">Denúncia</option>
                   <option value="Sugestão">Sugestão</option>
-                @php
-                } elseif (isset($tipo) && $tipo == "Denúncia") { @endphp
+                
+                 @elseif (isset($tipo) && $tipo == "Denúncia")
                   <option value="Denúncia">Denúncia</option>
                   <option value="Sugestão">Sugestão</option>
-                @php
-                } elseif (isset($tipo) && $tipo == "Sugestão") { @endphp
+                
+                @elseif (isset($tipo) && $tipo == "Sugestão")
                   <option value="Sugestão">Sugestão</option>
                   <option value="Denúncia">Denúncia</option>
-                @php
-                }
-                @endphp
+                @endif
+
               </select>
               <div class="invalid-feedback">
                 Selecione um tipo de requerimento
@@ -116,11 +115,6 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
               </div>
             </div>
 
-            <div class="col-12 input-group mt-4">
-              <label class="input-group-text px-5" for="arquivo"><strong>Foto do local:</strong></label>
-              <input type="file" class="form-control" id="arquivo" accept="image/*" name="arquivo">
-            </div>
-
             <div class="col-12">
               <label for="descricao" class="form-label"><strong>Descrição: </strong></label>
               <textarea class="form-control" required placeholder="Insira uma descrição detalhada sobre o ambiente em discussão" id="descricao" style="height: 130px" name="descricao" maxlength="2000">@php if (isset($descricao)){ echo $descricao; } @endphp</textarea>
@@ -128,6 +122,27 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
                 Insira uma descrição, com no mínimo 50 caracteres, sobre o ambiente em discussão
               </div>
             </div>
+
+            <div class="row mt-4">
+              <div id="images" class="col-md-10">
+                  <div class="input-group my-auto">
+                      <label class="input-group-text px-5" for="image"><strong>Foto do local:</strong></label>
+                      <input type="file" class="form-control" id="image" accept="image/*" name="image">
+                  </div>
+              </div>
+              <div class="col-md-2 d-flex justify-content-center">
+                  <button type="button" class="btn btn-primary my-auto mx-1 rounded-circle p-1" onclick="adicionarCampo()" id="add_files">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-lg p-0 m-0" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                      </svg>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger my-auto mx-1 rounded-circle p-1" onclick="removerCampo()" id="remove_files" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-dash-lg p-0 m-0" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
+                    </svg>
+                  </button>
+              </div>
+          </div>
 
             <div class="col-12 form-check d-flex justify-content-center">
               @php if (!autenticado()) {
@@ -138,7 +153,7 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
                 $checked = 'value = "true" checked';
               } @endphp
 
-              <input class="form-check-input" type="checkbox" id="anonimo" name="anonimo" @php echo $checked @endphp>
+              <input class="form-check-input" type="checkbox" id="anonimo" name="anonimo" @guest checked disabled @endguest>
               <label class="form-check-label ms-1" for="anonimo">
                 Enviar <strong>anonimamente</strong>
               </label>
@@ -160,6 +175,73 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
 </div>
 
   <script>
+    var contadorCampos = 1; // Inicializa o contador
+
+    function adicionarCampo() {
+        // Crie um novo elemento div
+        var novoCampo = document.createElement('div');
+        novoCampo.className = 'col-12 input-group my-4';
+
+        // Atribui um número sequencial ao campo
+        var numeroCampo = contadorCampos;
+
+        // Conteúdo do novo campo HTML
+        novoCampo.innerHTML = `
+            <label class="input-group-text px-5" for="image_${numeroCampo}"><strong>Foto do local:</strong></label>
+            <input type="file" class="form-control" id="image_${numeroCampo}" accept="image/*" name="image_${numeroCampo}">
+        `;
+
+        // Adicione o novo campo ao container
+        document.getElementById('images').appendChild(novoCampo);
+
+        // Habilita o botão de remoção
+        document.getElementById('remove_files').disabled = false;
+        document.getElementById('remove_files').classList.remove('btn-outline-danger');
+        document.getElementById('remove_files').classList.add('btn-danger');
+
+        // Desabilita o botão de adição se o limite for atingido
+        if (contadorCampos + 1 >= 5) {
+            document.getElementById('add_files').disabled = true;
+            document.getElementById('add_files').classList.remove('btn-primary');
+            document.getElementById('add_files').classList.add('btn-outline-primary');
+        }
+
+        // Incrementa o contador
+        contadorCampos++;
+    }
+
+    function removerCampo() {
+        // Verifica quantos campos já foram criados
+        var camposCriados = document.querySelectorAll('.col-12.input-group.my-4').length;
+
+        // Verifica se há pelo menos um campo para remover
+        if (camposCriados > 0) {
+            // Remove o último campo adicionado
+            var ultimoCampo = document.querySelector('.col-12.input-group.my-4:last-of-type');
+            ultimoCampo.remove();
+
+            // Habilita o botão de adição se o limite não foi atingido
+            if (contadorCampos - 1 < 5) {
+                document.getElementById('add_files').disabled = false;
+                document.getElementById('add_files').classList.remove('btn-outline-primary');
+                document.getElementById('add_files').classList.add('btn-primary');
+            }
+
+            // Atualiza o contador (subtrai 1)
+            contadorCampos--;
+        }
+
+        // Desabilita o botão de remoção se não houver mais campos para remover
+        if (contadorCampos === 1) {
+            document.getElementById('remove_files').disabled = true;
+            document.getElementById('remove_files').classList.remove('btn-danger');
+            document.getElementById('remove_files').classList.add('btn-outline-danger');
+        }
+    }
+
+
+
+
     const tituloInput = document.getElementById("titulo");
     const labelTitulo = document.querySelector("label[for='titulo']");
 

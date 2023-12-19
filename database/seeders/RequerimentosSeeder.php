@@ -15,6 +15,6 @@ class RequerimentosSeeder extends Seeder
      */
     public function run()
     {
-        Requerimento::factory(15)->create();
+        Requerimento::factory(50)->create();
     }
 }

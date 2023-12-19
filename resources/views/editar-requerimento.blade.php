@@ -60,11 +60,11 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
 
         <div class="row">
             <div class="col-11 mx-auto mb-4">
-                <form class="needs-validation" action="alterar-requerimento.php" method="POST" enctype="multipart/form-data">
+                <form class="needs-validation" action="{{ route('update-request') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div class="row g-3">
                         <div class="col-md-8">
-                            <input type="hidden" name="alterar" required id="alterar" value="{{ $requerimento->id }}">
+                            <input type="hidden" name="id" required id="id" value="{{ $requerimento->id }}">
 
                             <label for="titulo" class="form-label" required id="label_titulo"><strong>Título do requerimento: </strong></label>
                             <input type="text" class="form-control" required id="titulo" placeholder="Ex: Falta de rampas de acesso" name="titulo" value="{{ $requerimento->titulo }}" pattern="[A-Za-zÀ-ÿ\s]+" title="Insira um título que contenha apenas letras. Nenhum outro tipo de caracter será válido" maxLength="150">
@@ -122,33 +122,20 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
                                 Informe uma logradouro válida
                             </div>
                         </div>
-                        {{--
-                        @php                        
-                        $sql = "SELECT dados_arquivo, nome FROM arquivo a INNER JOIN requerimento r
-                        ON a.id_requerimento = r.id_requerimento
-                        WHERE a.id_requerimento = ? AND r.id_usuario = ?";
 
-                        $stmt = $conn->prepare($sql);
-                        $stmt->execute([$id_requerimento, $id_usuario]);
-                        $cont = $stmt->rowCount();
-
-                        if ($cont >= 1) {
-                        @endphp
-                            <div class="col-12 input-group mt-4">
-                                <label class="input-group-text px-5" for="arquivo"><strong>Foto do local:</strong></label>
-                                <input type="file" class="form-control" id="arquivo" accept="image/*" name="arquivo">
-                            </div>
-                        @php
-                        } else {
-                        @endphp
-                            <div class="col-12 input-group mt-4">
-                                <label class="input-group-text px-5" for="arquivo"><strong>Adicionar foto do local:</strong></label>
-                                <input type="file" class="form-control" id="arquivo" accept="image/*" name="arquivo">
-                            </div>
-                        @php
-                        }
-                        @endphp
-                        --}}
+                        @isset($arquivos)
+                            @if($arquivos->isNotEmpty())
+                                <div class="col-12 input-group mt-4">
+                                    <label class="input-group-text px-5" for="image"><strong>Selecione a nova foto do local:</strong></label>
+                                    <input type="file" class="form-control" id="image" accept="image/*" name="image">
+                                </div>
+                            @else
+                                <div class="col-12 input-group mt-4">
+                                    <label class="input-group-text px-5" for="image"><strong>Adicione a foto do local:</strong></label>
+                                    <input type="file" class="form-control" id="image" accept="image/*" name="image">
+                                </div>
+                            @endif
+                        @endisset
 
                         <div class="col-12">
                             <label for="descricao" class="form-label"><strong>Descrição: </strong></label>

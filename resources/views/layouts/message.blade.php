@@ -77,7 +77,7 @@ function historyGuest(){
         }        
         echo success($title);
     @endphp
-
+    
 {{-- SUCESSO: Usuario --}}
 @elseif(isset($mensagens['success_user']))
     @php

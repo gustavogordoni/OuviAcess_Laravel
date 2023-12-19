@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth')->only(['create', 'edit', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      * Listar as informações
@@ -25,12 +30,9 @@ class UserController extends Controller
     public function create()
     {
         $usuario = auth()->user();
-
-        if ($usuario) {
-            return view('perfil', compact('usuario'));
-        } else {
-            return redirect()->route('authentication')->with('message', ['guest_acess' => 'perfil']);
-        }
+       
+        return view('perfil', compact('usuario'));
+       
     }
 
     /**
@@ -41,18 +43,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $usuario = new User;
+        $user = $request->all();
+        $user['password'] = bcrypt($request->password);
+        $user = User::create($user);
 
-        $usuario->name = $request->nome;
-        $usuario->ddd = $request->ddd;
-        $usuario->phone = $request->telefone;
-        $usuario->email = $request->email;
-        $usuario->password = bcrypt($request->senha);
+        Auth::login($user);
 
-        $usuario->save();
-
-        //return redirect('home');
-        return redirect()->route('home')->with('message', ['success_user' => 'store']);
+        return redirect()->intended('home')->with('message', ['success_authentication' => auth()->user()->name]);
     }
 
     /**
@@ -74,7 +71,8 @@ class UserController extends Controller
      */
     public function edit()
     {
-        $usuario = User::all()->first();
+        $usuario = auth()->user();
+       
         return view('editar-perfil', compact('usuario'));
     }
 

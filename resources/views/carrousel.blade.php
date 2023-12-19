@@ -5,7 +5,7 @@
     <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item">
+    <div class="carousel-item home">
       <img src="../image/img5.jpg" alt="Imagem ilustrativa de uma vaga especial para pessoas portadoras de deficiência" class="img-fluid">
       <div class="container">
         <div class="carousel-caption text-start">
@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="carousel-item active">
+    <div class="carousel-item home active">
       <img src="../image/vaga_acessibilidade.jpg" alt="Imagem ilustrativa de um piso tátil" class="img-fluid">
       <div class="container">
         <div class="carousel-caption">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item home">
       <img src="../image/corrimao.jpg" alt="Imagem ilustrativa de um corrimão junto a uma rampa " class="img-fluid">
       <div class="container">
         <div class="carousel-caption text-end">

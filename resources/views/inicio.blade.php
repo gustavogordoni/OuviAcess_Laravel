@@ -42,7 +42,7 @@
     <div class="d-flex justify-content-center mb-3">
         <a href="#myCarousel"><button class="btn btn-outline-info rounded-pill px-3">Voltar ao topo</button></a>
     </div>
-
+    
 @if($mensagens = Session::get('message'))
     @include('layouts.message', ['mensagens' => $mensagens])           
 @endif

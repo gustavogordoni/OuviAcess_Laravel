@@ -41,8 +41,8 @@ $cont =  $stmt->rowCount();
                     <div class="row g-3">
 
                         <div class="col-sm-12">
-                            <label for="nome" class="form-label" id="label_nome"><strong>Nome completo: </strong></label>
-                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="{{ $usuario->name }}" maxlength="150">
+                            <label for="name" class="form-label" id="label_nome"><strong>Nome completo: </strong></label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="{{ $usuario->name }}" maxlength="150">
                             <div class="invalid-feedback">
                                 Informe seu nome completo
                             </div>
@@ -58,8 +58,8 @@ $cont =  $stmt->rowCount();
                         </div>
 
                         <div class="col-sm-9">
-                            <label for="telefone" class="form-label"><strong>Número de telefone: </strong></label>
-                            <input type="tel" class="form-control" id="telefone" name="telefone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->phone }}" maxlength="10">
+                            <label for="phone" class="form-label"><strong>Número de telefone: </strong></label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->phone }}" maxlength="10">
                             <div class="invalid-feedback">
                                 Informe um valor válido
                             </div>
@@ -95,24 +95,24 @@ $cont =  $stmt->rowCount();
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
-                            <form action="alterar-senha.php" method="POST" class="form my-auto">
-
+                            <form action="{{ route('edit-password') }}" method="POST" class="form my-auto">
+                                @csrf
                                 <div class="modal-header">
                                     <p class="modal-title fs-4 text-center" id="staticBackdropLabel">Confirme sua senha atual, antes de realizar a modificação</p>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="col-12 mt-2">
-                                        <label for="senha_atual" class="form-label text-center" id="label_atual"><strong>Senha atual: </strong></label>
-                                        <input type="password" class="form-control" id="senha_atual" name="senha_atual" required maxlength="150">
+                                        <label for="password" class="form-label text-center" id="label_atual"><strong>Senha atual: </strong></label>
+                                        <input type="password" class="form-control" id="password" name="password" required maxlength="150">
                                     </div>
                                     <div class="col-12 mt-2">
-                                        <label for="senha_nova" class="form-label text-center" id="label_nova"><strong>Nova senha: </strong></label>
-                                        <input type="password" class="form-control" id="senha_nova" name="senha_nova" required maxlength="150">
+                                        <label for="newpassword" class="form-label text-center" id="label_nova"><strong>Nova senha: </strong></label>
+                                        <input type="password" class="form-control" id="newpassword" name="newpassword" required maxlength="150">
                                     </div>
                                     <div class="col-12 mt-2">
-                                        <label for="senha_confirmacao" class="form-label text-center" id="label_confirmacao"><strong>Confirme a nova senha: </strong></label>
-                                        <input type="password" class="form-control" id="senha_confirmacao" name="senha_confirmacao" required maxlength="150" onblur="verifica_senhas();">
+                                        <label for="confirmpassword" class="form-label text-center" id="label_confirmacao"><strong>Confirme a nova senha: </strong></label>
+                                        <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" required maxlength="150" onblur="verifica_senhas();">
                                         <div id="confsenhaFeedback" class="invalid-feedback">
                                             As senhas informadas não estão iguais.
                                         </div>
@@ -173,8 +173,8 @@ $cont =  $stmt->rowCount();
     });
 
     function verifica_senhas() {
-        var senha = document.getElementById("senha_nova");
-        var confirme = document.getElementById("senha_confirmacao");
+        var senha = document.getElementById("newpassword");
+        var confirme = document.getElementById("confirmpassword");
         var label_senha = document.getElementById("label_nova");
         var label_confirme = document.getElementById("label_confirmacao");
 

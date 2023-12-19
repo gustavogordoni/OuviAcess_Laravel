@@ -9,6 +9,11 @@ class Arquivo extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id_requerimento',
+        'name',
+    ];
+
     public function requerimento(){
         return $this->belongsTo(Requerimento::class, 'id_requerimento');
     }

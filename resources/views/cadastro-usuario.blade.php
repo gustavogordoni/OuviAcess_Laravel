@@ -41,8 +41,8 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
           <div class="row g-3">
 
             <div class="col-sm-12">
-              <label for="nome" class="form-label" id="label_nome"><strong>Nome completo: </strong></label>
-              <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="@php if (isset($nome)) {echo $nome;} @endphp" maxlength="150">
+              <label for="name" class="form-label" id="label_nome"><strong>Nome completo: </strong></label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="@php if (isset($nome)) {echo $nome;} @endphp" maxlength="150">
               <div class="invalid-feedback">
                 Informe seu nome completo
               </div>
@@ -58,8 +58,8 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
             </div>
 
             <div class="col-sm-9">
-              <label for="telefone" class="form-label"><strong>Número de telefone: </strong></label>
-              <input type="tel" class="form-control" id="telefone" name="telefone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="@php if (isset($telefone)) {echo $telefone;} @endphp" maxlength="10">
+              <label for="phone" class="form-label"><strong>Número de telefone: </strong></label>
+              <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="@php if (isset($telefone)) {echo $telefone;} @endphp" maxlength="10">
               <div class="invalid-feedback">
                 Informe um valor válido
               </div>
@@ -77,13 +77,13 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
             </div>
 
             <div class="col-12">
-              <label for="senha" class="form-label" id="label_senha"><strong>Senha: </strong><span class="text-body-secondary">(Para efetuar login)</span></label>
-              <input type="password" class="form-control" id="senha" name="senha" required maxlength="150">
+              <label for="password" class="form-label" id="label_senha"><strong>Senha: </strong><span class="text-body-secondary">(Para efetuar login)</span></label>
+              <input type="password" class="form-control" id="password" name="password" required maxlength="150">
             </div>
 
             <div class="col-12">
-              <label for="confirme" class="form-label" id="label_confirme"><strong>Confirme a senha: </strong></label>
-              <input type="password" class="form-control" id="confirme" name="confirme" required aria-describedby="confsenha confsenhaFeedback" onblur="verifica_senhas();" maxlength="150">
+              <label for="confirm" class="form-label" id="label_confirme"><strong>Confirme a senha: </strong></label>
+              <input type="password" class="form-control" id="confirm" name="confirm" required aria-describedby="confsenha confsenhaFeedback" onblur="verifica_senhas();" maxlength="150">
               <div id="confsenhaFeedback" class="invalid-feedback">
                 As senhas informadas não estão iguais.
               </div>
@@ -105,7 +105,7 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
 
   <script>
     const dddInput = document.getElementById("ddd");
-    const telefoneInput = document.getElementById("telefone");
+    const telefoneInput = document.getElementById("phone");
 
     dddInput.addEventListener("input", function() {
       const inputValue = dddInput.value.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
@@ -136,8 +136,8 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
     }
 
     function verifica_senhas() {
-      var senha = document.getElementById("senha");
-      var confirme = document.getElementById("confirme");
+      var senha = document.getElementById("password");
+      var confirme = document.getElementById("confirm");
       var label_senha = document.getElementById("label_senha");
       var label_confirme = document.getElementById("label_confirme");
 
@@ -159,8 +159,8 @@ if (isset($_SESSION["error_cadastro"]) || isset($_SESSION["caracteres_cadastro"]
       }
     }
 
-    const nomeInput = document.getElementById("nome");
-    const labelNome = document.querySelector("label[for='nome']");
+    const nomeInput = document.getElementById("name");
+    const labelNome = document.querySelector("label[for='name']");
 
     nomeInput.addEventListener("keydown", function(event) {
       if (event.key >= '0' && event.key <= '9') {

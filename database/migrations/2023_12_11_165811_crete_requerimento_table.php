@@ -27,9 +27,9 @@ return new class extends Migration
             $table->text('descricao');
             
             $table->string('cep', 10);
-            $table->string('cidade', 150);
-            $table->string('bairro', 150);
-            $table->string('logradouro', 150);
+            $table->string('cidade');
+            $table->string('bairro');
+            $table->string('logradouro');
     
             $table->text('resposta')->nullable();            
             $table->foreignId('id_administrador')->nullable()->constrained('administrador');
