@@ -328,6 +328,8 @@
         </div>    
         @endif
 
+        {{-- $user->links() --}}
+
     @else
         @php 
             Session::put('message', ['history' => 'empty']); 

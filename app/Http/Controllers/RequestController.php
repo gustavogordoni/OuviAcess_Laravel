@@ -83,7 +83,7 @@ class RequestController extends Controller
 
         $requerimento['situacao'] = "Pendente";
         date_default_timezone_set('America/Sao_Paulo');
-        $requerimento['data'] = date('d/m/Y');       
+        $requerimento['data'] = date('Y-m-d');    
         
         $requerimento = Requerimento::create($requerimento);
 
