@@ -49,7 +49,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('home')->with('message', ['success_authentication' => auth()->user()->name]);
+        return redirect()->route('index')->with('message', ['success_authentication' => auth()->user()->name]);
     }
 
     /**
@@ -95,6 +95,41 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('profile')->with('message', ['success_profile' => 'update']);
+    }
+
+     /**
+     * Update the specified resource in storage.
+     * UPDATE - Atualiza um registro no Banco de Dados
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request)
+    {
+        $usuario = User::find(auth()->user()->id);
+
+        // Senha atual está correta
+        if (password_verify($request->password, $usuario['password'])) {
+            // Confirmação da senha nova
+            if($request->newpassword == $request->confirmpassword){
+                // Nova senha é diferente da atual
+                if (!password_verify($request->newpassword, $usuario['password'])) {
+                    /*
+                    $usuario->update([
+                        'password' => bcrypt($request->newpassword),
+                    ]);
+                    */
+                    return redirect()->route('profile')->with('message', ['success_user' => 'updatePassword']);
+                    
+                }else{
+                    return redirect()->route('edit-profile')->with('message', ['error_user' => 'existPassword']);
+                }               
+            }else{
+                return redirect()->route('edit-profile')->with('message', ['error_user' => 'invalidConfirm']);
+            }
+        }else{
+            return redirect()->route('edit-profile')->with('message', ['error_user' => 'invalidPassword']);
+        }
     }
 
     /**

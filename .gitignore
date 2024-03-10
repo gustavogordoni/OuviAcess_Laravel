@@ -4,6 +4,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/.docker
 .env
 .env.backup
 .env.production
@@ -16,3 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+Laravel_Terminal.txt
+/public/image/imageRequest

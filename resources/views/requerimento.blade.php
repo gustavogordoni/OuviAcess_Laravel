@@ -128,6 +128,7 @@ if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requer
                   <div class="input-group my-auto">
                       <label class="input-group-text px-5" for="image"><strong>Foto do local:</strong></label>
                       <input type="file" class="form-control" id="image" accept="image/*" name="image">
+                      <!-- <input type="file" class="form-control" id="image" accept="image/*" name="image" multiple> -->
                   </div>
               </div>
               <div class="col-md-2 d-flex justify-content-center">

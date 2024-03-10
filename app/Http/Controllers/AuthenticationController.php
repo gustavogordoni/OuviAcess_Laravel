@@ -19,15 +19,14 @@ class AuthenticationController extends Controller
             'email.required' => 'email.required',
             'email.email' => 'email.email',
             'password.required' => 'password.required',
-        ]  
-    );
+        ]);
 
-    if(Auth::attempt($credenciais, $request->remember)){
-        $request->session()->regenerate();
-        return redirect()->route('index')->with('message', ['success_authentication' => auth()->user()->name]);
-    }else{
-        return redirect()->route('authentication')->with('message', ['error_authentication' => 'any']);
-    } 
+        if(Auth::attempt($credenciais, $request->remember)){
+            $request->session()->regenerate();
+            return redirect()->route('index')->with('message', ['success_authentication' => auth()->user()->name]);
+        }else{
+            return redirect()->route('authentication')->with('message', ['error_authentication' => 'any']);
+        } 
     }       
 
     public function logout(Request $request){        

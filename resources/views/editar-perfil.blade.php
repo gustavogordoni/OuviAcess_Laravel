@@ -97,7 +97,7 @@ $cont =  $stmt->rowCount();
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
-                            <form action="{{ route('edit-password') }}" method="POST" class="form my-auto">
+                            <form action="{{ route('update-password') }}" method="POST" class="form my-auto">
                                 @csrf
                                 <div class="modal-header">
                                     <p class="modal-title fs-4 text-center" id="staticBackdropLabel">Confirme sua senha atual, antes de realizar a modificação</p>

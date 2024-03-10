@@ -191,7 +191,6 @@ class RequestController extends Controller
                 $arquivo->save();
             }
         }   
-
             return redirect()->route('history')->with('message', ['success_request' => 'update']);
         }
 

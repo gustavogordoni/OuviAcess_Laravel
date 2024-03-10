@@ -84,7 +84,7 @@ $class = $arrayTheme['class'];
                 Login
               </button></a>
             @php
-            if (basename($_SERVER["PHP_SELF"]) == "register") {
+            if (request()->is('register')) {
               $btn_cadastro = "btn-danger";
             } else{
               $btn_cadastro = "btn-outline-danger";
@@ -98,13 +98,11 @@ $class = $arrayTheme['class'];
               </button></a>
           @endguest
           @auth
-            @php
-              if (basename($_SERVER["PHP_SELF"]) == "profile" || basename($_SERVER["PHP_SELF"]) == "edit-profile") {
-                $btn_perfil = "btn-primary";
-              } else{
-                $btn_perfil = "btn-outline-primary";
-              }
-            @endphp
+            @if (request()->is('profile') ||request()->is('edit-profile'))
+              @php $btn_perfil = "btn-primary"; @endphp
+            @else
+              @php $btn_perfil = "btn-outline-primary"; @endphp
+            @endif
             <a href="{{ route('profile') }}"><button type="button" class="btn @php echo $btn_perfil @endphp mx-1 rounded-pill">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
@@ -127,8 +125,7 @@ $class = $arrayTheme['class'];
             <input type="hidden" value="{{ url()->current() }}" name="page">
           </form>
         </div>
-
-
+        
       </div>
     </div>
   </div>
