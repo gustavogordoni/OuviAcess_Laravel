@@ -17,6 +17,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\MarkersController;
 
 /* Navegação pelas Páginas */
 
@@ -55,7 +56,7 @@ Route::get('/delete-profile', [UserController::class, 'destroy'])->name('delete-
 Route::get('/edit-password', [UserController::class, 'edit'])->name('edit-password');
 
 /* Atualizar senha */
-Route::post('/update-password', [UserController::class, 'updatePassword'])->name('update-password');
+Route::post('/update-password', [UserController::class, 'update'])->name('update-password');
 
 /* Exibir requerimento */
 Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request');
@@ -82,3 +83,5 @@ Route::post('/store-user', [UserController::class, 'store'])->name('store-user')
 
 /* Create Requerimento */
 Route::post('/store-request', [RequestController::class, 'store'])->name('store-request');
+
+Route::get('/map', [MarkersController::class, 'index'])->name('map');
