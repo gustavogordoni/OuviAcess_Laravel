@@ -1,6 +1,8 @@
 
 # OuviAcess
 
+<div align="center"><img src="public/image/OuviAcess.png" width="300" /></div>
+
 ### Instalando e configurando a aplicação
 Clone o repositório
 ```sh
@@ -14,13 +16,14 @@ cd OuviAcess_Laravel/
 ```
 
 
-Crie o Arquivo .env
+Crie o arquivo .env
 ```sh
 cp .env.example .env
 ```
 
 
 Atualize as variáveis de ambiente do arquivo .env 
+> Recomenda-se alterar as senhas (passwords)
 ```dosini
 DB_CONNECTION=mysql
 DB_HOST=db
@@ -39,6 +42,17 @@ REDIS_PORT=6379
 ```
 
 
+Suba os containers do projeto
+```sh
+docker-compose up -d
+```
+
+Acessar o container
+```sh
+composer install
+```
+
+
 Instale as dependências do projeto
 ```sh
 composer install
@@ -48,12 +62,6 @@ composer install
 Gere a key do projeto Laravel
 ```sh
 php artisan key:generate
-```
-
-
-Suba os containers do projeto
-```sh
-docker-compose up -d
 ```
 
 
