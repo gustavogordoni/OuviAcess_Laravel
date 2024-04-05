@@ -47,9 +47,10 @@ Suba os containers do projeto
 docker-compose up -d
 ```
 
+
 Acessar o container
 ```sh
-composer install
+docker-compose exec app bash
 ```
 
 
