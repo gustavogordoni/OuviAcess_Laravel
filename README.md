@@ -3,7 +3,11 @@
 
 <div align="center"><img src="public/image/OuviAcess.png" width="300" /></div>
 
-### Instalando e configurando a aplicação
+## Pré-requisitos
+- [Git](https://git-scm.com/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) ou [Docker Engine](https://docs.docker.com/engine/)
+
+## Instalando e configurando a aplicação
 Clone o repositório
 ```sh
 git clone https://github.com/gustavogordoni/OuviAcess_Laravel.git
