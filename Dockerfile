@@ -1,7 +1,7 @@
 FROM php:8.1-fpm
 
 # set your user name, ex: user=carlos
-ARG user=admin
+ARG user=gustavo
 ARG uid=1000
 
 # Install system dependencies
@@ -40,5 +40,3 @@ WORKDIR /var/www
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 USER $user
-
-# RUN php artisan migrate && php artisan db:seed

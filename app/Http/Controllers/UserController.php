@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -30,9 +31,8 @@ class UserController extends Controller
     public function create()
     {
         $usuario = auth()->user();
-       
+
         return view('perfil', compact('usuario'));
-       
     }
 
     /**
@@ -41,15 +41,21 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $user = $request->all();
         $user['password'] = bcrypt($request->password);
+        $user['type'] = 1;
+
+        //dd($user);
         $user = User::create($user);
 
         Auth::login($user);
 
-        return redirect()->route('index')->with('message', ['success_authentication' => auth()->user()->name]);
+        return redirect()
+            ->route('index')           
+            ->with('info', 'Seja bem-vindo(a) '. auth()->user()->name);
+            
     }
 
     /**
@@ -72,7 +78,7 @@ class UserController extends Controller
     public function edit()
     {
         $usuario = auth()->user();
-       
+
         return view('editar-perfil', compact('usuario'));
     }
 
@@ -91,10 +97,12 @@ class UserController extends Controller
             'name' => $request->name,
             'ddd' => $request->ddd,
             'phone' => $request->phone,
-            //'email' => $request->cep,
+            //'email' => $request->email,
         ]);
 
-        return redirect()->route('profile')->with('message', ['success_profile' => 'update']);
+        return redirect()
+            ->route('profile')
+            ->with('success', 'Perfil atualizado com sucesso!');
     }
 
      /**
@@ -114,21 +122,29 @@ class UserController extends Controller
             if($request->newpassword == $request->confirmpassword){
                 // Nova senha é diferente da atual
                 if (!password_verify($request->newpassword, $usuario['password'])) {
-                    /*
+                    
                     $usuario->update([
                         'password' => bcrypt($request->newpassword),
                     ]);
-                    */
-                    return redirect()->route('profile')->with('message', ['success_user' => 'updatePassword']);
                     
+                    return redirect()
+                        ->route('profile')
+                        ->with('success', 'Senha atualizada com sucesso!');
+
                 }else{
-                    return redirect()->route('edit-profile')->with('message', ['error_user' => 'existPassword']);
-                }               
+                    return redirect()
+                        ->route('edit-profile')
+                        ->with('message', ['error_user' => 'existPassword']);
+                }
             }else{
-                return redirect()->route('edit-profile')->with('message', ['error_user' => 'invalidConfirm']);
+                return redirect()
+                    ->route('edit-profile')
+                    ->with('message', ['error_user' => 'invalidConfirm']);
             }
         }else{
-            return redirect()->route('edit-profile')->with('message', ['error_user' => 'invalidPassword']);
+            return redirect()
+                ->route('edit-profile')
+                ->with('message', ['error_user' => 'invalidPassword']);
         }
     }
 

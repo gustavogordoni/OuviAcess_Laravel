@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::create('requerimentos', function (Blueprint $table) {
-            //$table->integer('id');
             $table->id();
             //$table->foreignId('id_usuario')->nullable()->constrained('usuarios');
             $table->unsignedBigInteger('id_usuario')->nullable();
@@ -32,7 +31,7 @@ return new class extends Migration
             $table->string('logradouro');
     
             $table->text('resposta')->nullable();            
-            $table->foreignId('id_administrador')->nullable()->constrained('administrador');
+            //$table->foreignId('id_administrador')->nullable()->constrained('administrador');
     
             $table->timestamps();
         });

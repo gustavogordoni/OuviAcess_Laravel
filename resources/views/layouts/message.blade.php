@@ -204,7 +204,7 @@ function historyGuest(){
         }
         // GUEST
         elseif ($history == "guest") {
-            echo historyGuest();;
+            echo historyGuest();
         }            
     @endphp
 

@@ -247,9 +247,7 @@ if ($cont >= 1) {
     </main>
 </div>
 
-@if($mensagens = Session::get('message'))
-    @include('layouts.message', ['mensagens' => $mensagens])           
-@endif
+<x-alert />
 @include ('layouts.footer')
 
 @endsection

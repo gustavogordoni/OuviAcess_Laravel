@@ -7,11 +7,11 @@
 @php
 /*
 if (autenticado()) {
-    $id_usuario = $_SESSION["id_usuario"];
+$id_usuario = $_SESSION["id_usuario"];
 } elseif (!autenticado()) {
-    $_SESSION["realizar_login"] = "editar-perfil";
-    redireciona("login.php");
-    die();
+$_SESSION["realizar_login"] = "editar-perfil";
+redireciona("login.php");
+die();
 }
 
 require '../database/conexao.php';
@@ -21,7 +21,7 @@ $sql = "SELECT nome, ddd, telefone, email, senha FROM usuario WHERE id_usuario =
 $stmt = $conn->prepare($sql);
 $result = $stmt->execute([$id_usuario]);
 $rowUsuario = $stmt->fetch();
-$cont =  $stmt->rowCount();
+$cont = $stmt->rowCount();
 
 */
 @endphp
@@ -43,8 +43,12 @@ $cont =  $stmt->rowCount();
                     <div class="row g-3">
 
                         <div class="col-sm-12">
-                            <label for="name" class="form-label" id="label_nome"><strong>Nome completo: </strong></label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+" title="Não informe caracteres que não sejam letras" onblur="nome();" value="{{ $usuario->name }}" maxlength="150">
+                            <label for="name" class="form-label" id="label_nome"><strong>Nome completo:
+                                </strong></label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                placeholder="Ex: Carlos Alberto" required pattern="[A-Za-zÀ-ÿ\s]+"
+                                title="Não informe caracteres que não sejam letras" onblur="nome();"
+                                value="{{ $usuario->name }}" maxlength="150">
                             <div class="invalid-feedback">
                                 Informe seu nome completo
                             </div>
@@ -52,7 +56,9 @@ $cont =  $stmt->rowCount();
 
                         <div class="col-sm-3">
                             <label for="ddd" class="form-label"><strong>DDD: </strong></label>
-                            <input type="tel" class="form-control" id="ddd" name="ddd" required pattern="\([0-9]{2}\)$" title="Digite o DDD no formato (DD)" placeholder="Ex: (17)" value="{{ $usuario->ddd }}" maxlength="4">
+                            <input type="tel" class="form-control" id="ddd" name="ddd" required pattern="\([0-9]{2}\)$"
+                                title="Digite o DDD no formato (DD)" placeholder="Ex: (17)" value="{{ $usuario->ddd }}"
+                                maxlength="4">
 
                             <div class="invalid-feedback">
                                 Informe um valor válido
@@ -61,7 +67,10 @@ $cont =  $stmt->rowCount();
 
                         <div class="col-sm-9">
                             <label for="phone" class="form-label"><strong>Número de telefone: </strong></label>
-                            <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->phone }}" maxlength="10">
+                            <input type="tel" class="form-control" id="phone" name="phone" required
+                                pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX"
+                                placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->phone }}"
+                                maxlength="10">
                             <div class="invalid-feedback">
                                 Informe um valor válido
                             </div>
@@ -71,57 +80,68 @@ $cont =  $stmt->rowCount();
                             <label for="email" class="form-label"><strong>E-mail: </strong></label>
                             <div class="input-group has-validation">
                                 <span class="input-group-text">@</span>
-                                <input readonly type="email" class="form-control" id="email" name="email" placeholder="voce@exemplo.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $usuario->email }}" maxlength="150">
+                                <input readonly type="email" class="form-control" id="email" name="email"
+                                    placeholder="voce@exemplo.com" required
+                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $usuario->email }}"
+                                    maxlength="150">
                                 <div class="invalid-feedback">
                                     Por favor, insira um endereço de e-mail válido para efetuar login
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mt-4 col-12 row">
+                        <div class="mt-5 col-12 row">
                             <div class="col-md-6 mb-3">
-                                <button type="button" class="w-100 btn btn-warning btn-lg rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Alterar senha
-                                </button>
+                                <button type="button" class="w-100 btn btn-warning btn-lg rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Alterar senha</button>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <button class="w-100 btn btn-primary btn-lg rounded-pill px-3" type="submit">Enviar</button>
-                            </div>                            
-                        </div>
-                        <div class="mt-1 col-12 row">
-                            <a class="w-100 btn btn-secondary rounded-pill px-3 btn-lg" href="{{ route('profile') }}">Voltar ao perfil</a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="{{ route('profile') }}" class="w-100 btn btn-secondary btn-lg rounded-pill px-3" >Cancelar alteração</a>
+                            </div>
                         </div>
 
                 </form>
 
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
                             <form action="{{ route('update-password') }}" method="POST" class="form my-auto">
                                 @csrf
                                 <div class="modal-header">
-                                    <p class="modal-title fs-4 text-center" id="staticBackdropLabel">Confirme sua senha atual, antes de realizar a modificação</p>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <p class="modal-title fs-4 text-center" id="staticBackdropLabel">Confirme sua senha
+                                        atual, antes de realizar a modificação</p>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="col-12 mt-2">
-                                        <label for="password" class="form-label text-center" id="label_atual"><strong>Senha atual: </strong></label>
-                                        <input type="password" class="form-control" id="password" name="password" required maxlength="150">
+                                        <label for="password" class="form-label text-center"
+                                            id="label_atual"><strong>Senha atual: </strong></label>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            required maxlength="150">
                                     </div>
                                     <div class="col-12 mt-2">
-                                        <label for="newpassword" class="form-label text-center" id="label_nova"><strong>Nova senha: </strong></label>
-                                        <input type="password" class="form-control" id="newpassword" name="newpassword" required maxlength="150">
+                                        <label for="newpassword" class="form-label text-center"
+                                            id="label_nova"><strong>Nova senha: </strong></label>
+                                        <input type="password" class="form-control" id="newpassword" name="newpassword"
+                                            required maxlength="150">
                                     </div>
                                     <div class="col-12 mt-2">
-                                        <label for="confirmpassword" class="form-label text-center" id="label_confirmacao"><strong>Confirme a nova senha: </strong></label>
-                                        <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" required maxlength="150" onblur="verifica_senhas();">
+                                        <label for="confirmpassword" class="form-label text-center"
+                                            id="label_confirmacao"><strong>Confirme a nova senha: </strong></label>
+                                        <input type="password" class="form-control" id="confirmpassword"
+                                            name="confirmpassword" required maxlength="150" onblur="verifica_senhas();">
                                         <div id="confsenhaFeedback" class="invalid-feedback">
                                             As senhas informadas não estão iguais.
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer mx-auto w-100 d-flex justify-content-center">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Voltar</button>
                                     <button type="submit" class="btn btn-success" name="deletar">Confirmar</button>
                                 </div>
 
@@ -138,7 +158,6 @@ $cont =  $stmt->rowCount();
 </div>
 
 <script>
-
     document.addEventListener("DOMContentLoaded", function() {
         const dddInput = document.getElementById("ddd");
         const labelDdd = document.querySelector("label[for='ddd']");
@@ -230,8 +249,8 @@ $cont =  $stmt->rowCount();
 </script>
 
 @if($mensagens = Session::get('message'))
-        @include('layouts.message', ['mensagens' => $mensagens])           
-    @endif
+@include('layouts.message', ['mensagens' => $mensagens])
+@endif
 @include ('layouts.footer')
 
 @endsection

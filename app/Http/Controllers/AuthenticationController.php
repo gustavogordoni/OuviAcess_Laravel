@@ -23,9 +23,14 @@ class AuthenticationController extends Controller
 
         if(Auth::attempt($credenciais, $request->remember)){
             $request->session()->regenerate();
-            return redirect()->route('index')->with('message', ['success_authentication' => auth()->user()->name]);
+            return redirect()
+                ->route('index')
+                //->with('message', ['success_authentication' => auth()->user()->name]);
+                ->with('info', 'Seja bem-vindo(a) '. auth()->user()->name);
         }else{
-            return redirect()->route('authentication')->with('message', ['error_authentication' => 'any']);
+            return redirect()
+                ->route('authentication')
+                /*->with('message', ['error_authentication' => 'any'])*/;
         } 
     }       
 

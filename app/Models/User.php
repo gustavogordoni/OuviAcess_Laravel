@@ -15,6 +15,8 @@ class User extends Authenticatable
     
     use HasFactory;
     
+    const USER_TYPE_ADMIN = 0;
+    const USER_TYPE_COMMON = 1;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +29,7 @@ class User extends Authenticatable
         'phone',
         'email',
         'password',
+        'type',
     ];
 
     /**

@@ -19,6 +19,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'type' => $this->faker->randomElement([0, 1]),
             'ddd' => '(' . $this->faker->numerify('##') . ')',
             'phone' => $this->faker->numerify('#####-####'),
             'email' => fake()->unique()->safeEmail(),
