@@ -30,7 +30,7 @@ Atualize as variáveis de ambiente do arquivo .env
 > Recomenda-se alterar as senhas (passwords)
 ```dosini
 DB_CONNECTION=mysql
-DB_HOST=db
+DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=laravel
 DB_USERNAME=root
@@ -67,6 +67,12 @@ composer install
 Gere a key do projeto Laravel
 ```sh
 php artisan key:generate
+```
+
+
+Execute as migrations para criar as tabelas no banco de dados
+```sh
+php artisan migrate
 ```
 
 
