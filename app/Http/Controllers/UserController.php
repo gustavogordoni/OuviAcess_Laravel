@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         $user = $request->all();
         $user['password'] = bcrypt($request->password);
-        $user['type'] = 1;
+        $user['type'] = User::USER_TYPE_COMMON;
 
         //dd($user);
         $user = User::create($user);
