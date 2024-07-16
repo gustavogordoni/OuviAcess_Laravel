@@ -26,6 +26,15 @@ if (!function_exists('history')) {
         }
     }
 }
+if (!function_exists('requests')) {
+    function requests($pagina){    
+        if(Str::contains(request()->url(), $pagina)){
+            return " active rounded-4";
+        } else {
+            return null;
+        }
+    }
+}
 
 if (!function_exists('theme')) {
     function theme(){

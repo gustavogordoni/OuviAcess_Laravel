@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Requerimento;
 use Illuminate\Support\Facades\Auth;
 
 class AdministratorController extends Controller
@@ -25,39 +26,7 @@ class AdministratorController extends Controller
      */
     public function create($order = null)
     {
-        if ($order == "cards") {
-            $layout = "cards";
-        } else {
-            $layout = "table";
-        }
-
-        if (auth()->check()) {
-            /*
-            if($order == "date"){
-            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('data', 'asc')->get();
-            $order= ['date' => 'asc'];
-
-            }elseif($order == "title"){
-            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('titulo', 'asc')->get();
-            $order=['title' => 'asc'];
-
-            }elseif($order == "id"){
-            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('id', 'asc')->get();
-            $order=['id' => 'asc'];
-
-            }else{
-            $requerimentos = Requerimento::where('id_usuario', auth()->user()->id)->orderBy('data', 'asc')->get();
-            $order= ['date' => 'asc'];
-            }
-
-            //Gate::authorize('manipularRequerimento', $requerimentos);
-            */
-
-            return view('admin.requerimentos', compact('requerimentos', 'order', 'layout'));
-        } else {
-            $message = ['requests' => 'guest'];
-            return view('admin.requerimentos', compact('message'));
-        }
+        //
     }
 
     /**
@@ -115,4 +84,35 @@ class AdministratorController extends Controller
     {
         //
     }
+
+    public function requests($order = null)
+{
+    $layout = $order == "cards" ? "cards" : "table";
+
+    if (auth()->check() && auth()->user()->type == 1) {
+        $query = Requerimento::query();
+
+        if ($order == "date") {
+            $query->orderBy('data', 'asc');
+            $order = ['date' => 'asc'];
+        } elseif ($order == "title") {
+            $query->orderBy('titulo', 'asc');
+            $order = ['title' => 'asc'];
+        } elseif ($order == "id") {
+            $query->orderBy('id', 'asc');
+            $order = ['id' => 'asc'];
+        } else {
+            $query->orderBy('data', 'asc');
+            $order = ['date' => 'asc'];
+        }
+
+        $requerimentos = $query->paginate(10);
+
+        return view('admin.requerimentos', compact('requerimentos', 'order', 'layout'));
+    } else {
+        $message = ['requests' => 'guest'];
+        return view('admin.requerimentos', compact('message'));
+    }
+}
+
 }

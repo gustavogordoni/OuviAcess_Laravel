@@ -104,4 +104,4 @@ Route::get('/map', [MarkersController::class, 'index'])->name('map');
 /*****************************************************************************************************/
 
 /* Administrador */
-Route::get('/requests/{order?}', [AdministratorController::class, 'create'])->name('requests');
+Route::get('/requests/{order?}', [AdministratorController::class, 'requests'])->name('requests');
