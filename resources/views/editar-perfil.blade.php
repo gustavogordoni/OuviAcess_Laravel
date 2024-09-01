@@ -4,27 +4,6 @@
 @section('body')
 @include ('layouts.funcoes')
 
-@php
-/*
-if (autenticado()) {
-$id_usuario = $_SESSION["id_usuario"];
-} elseif (!autenticado()) {
-$_SESSION["realizar_login"] = "editar-perfil";
-redireciona("login.php");
-die();
-}
-
-require '../database/conexao.php';
-
-$sql = "SELECT nome, ddd, telefone, email, senha FROM usuario WHERE id_usuario = ?";
-
-$stmt = $conn->prepare($sql);
-$result = $stmt->execute([$id_usuario]);
-$rowUsuario = $stmt->fetch();
-$cont = $stmt->rowCount();
-
-*/
-@endphp
 @include ('layouts.navbar')
 
 <div class="container mx-auto h-75">
@@ -54,7 +33,7 @@ $cont = $stmt->rowCount();
                             </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        {{-- <div class="col-sm-3">
                             <label for="ddd" class="form-label"><strong>DDD: </strong></label>
                             <input type="tel" class="form-control" id="ddd" name="ddd" required pattern="\([0-9]{2}\)$"
                                 title="Digite o DDD no formato (DD)" placeholder="Ex: (17)" value="{{ $usuario->ddd }}"
@@ -63,18 +42,18 @@ $cont = $stmt->rowCount();
                             <div class="invalid-feedback">
                                 Informe um valor válido
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <label for="phone" class="form-label"><strong>Número de telefone: </strong></label>
                             <input type="tel" class="form-control" id="phone" name="phone" required
-                                pattern="[0-9]{4,6}-[0-9]{3,4}$" title="Digite o telefone no formato XXXXX-XXXX"
-                                placeholder="Ex: 99999-9999" maxlength="10" value="{{ $usuario->phone }}"
-                                maxlength="10">
+                                pattern="\(\d{2}\) \d{5}-\d{4}" title="Digite o telefone no formato (99) 99999-9999"
+                                placeholder="Ex: (99) 99999-9999" maxlength="15" value="{{ $usuario->phone }}">
                             <div class="invalid-feedback">
                                 Informe um valor válido
                             </div>
                         </div>
+
 
                         <div class="col-12">
                             <label for="email" class="form-label"><strong>E-mail: </strong></label>
@@ -92,13 +71,16 @@ $cont = $stmt->rowCount();
 
                         <div class="mt-5 col-12 row">
                             <div class="col-md-6 mb-3">
-                                <button type="button" class="w-100 btn btn-warning btn-lg rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Alterar senha</button>
+                                <button type="button" class="w-100 btn btn-warning btn-lg rounded-pill px-3"
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">Alterar senha</button>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <button class="w-100 btn btn-primary btn-lg rounded-pill px-3" type="submit">Enviar</button>
+                                <button class="w-100 btn btn-primary btn-lg rounded-pill px-3"
+                                    type="submit">Enviar</button>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <a href="{{ route('profile') }}" class="w-100 btn btn-secondary btn-lg rounded-pill px-3" >Cancelar alteração</a>
+                            <div class="col-md-12 mb-3">
+                                <a href="{{ route('profile') }}"
+                                    class="w-100 btn btn-secondary btn-lg rounded-pill px-3">Cancelar alteração</a>
                             </div>
                         </div>
 
@@ -159,36 +141,27 @@ $cont = $stmt->rowCount();
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const dddInput = document.getElementById("ddd");
-        const labelDdd = document.querySelector("label[for='ddd']");
         const telefoneInput = document.getElementById("phone");
-        const labelTelefone = document.querySelector("label[for='phone']");
-
-        dddInput.addEventListener("input", function() {
-            const inputValue = dddInput.value.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
-            const maxLength = 2;
-            const truncatedValue = inputValue.slice(0, maxLength);
-            const formattedValue = formatDDD(truncatedValue);
-            dddInput.value = formattedValue;
-        });
 
         telefoneInput.addEventListener("input", function() {
-            const inputValue = telefoneInput.value.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
-            const maxLength = 10;
+            const inputValue = telefoneInput.value.replace(/\D/g, "");
+            const maxLength = 11;
             const truncatedValue = inputValue.slice(0, maxLength);
-            const formattedValue = formatTelefone(truncatedValue);
+            const formattedValue = formatTelefoneComDDD(truncatedValue);
             telefoneInput.value = formattedValue;
         });
 
-        function formatDDD(value) {
-            const regex = /^(\d{2})$/;
-            const formattedValue = value.replace(regex, "($1)");
-            return formattedValue;
-        }
+        function formatTelefoneComDDD(value) {
+            let formattedValue = value;
 
-        function formatTelefone(value) {
-            const regex = /^(\d{5})(\d{4})$/;
-            const formattedValue = value.replace(regex, "$1-$2");
+            if (value.length <= 2) {
+                formattedValue = value.replace(/^(\d{0,2})/, "($1");
+            } else if (value.length <= 7) {
+                formattedValue = value.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+            } else {
+                formattedValue = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+            }
+
             return formattedValue;
         }
     });

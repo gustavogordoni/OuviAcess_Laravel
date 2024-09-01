@@ -18,43 +18,40 @@ class UsuariosSeeder extends Seeder
         // Criando usuário administrador
         User::create([
             'name' => 'Gustavo Luiz Gordoni',
-            'type' => User::USER_TYPE_ADMIN,
-            'ddd' => '(17)',
-            'phone' => '99999-9999',
-            'email' => 'a@a.com',
-            'password' => bcrypt('123')
+            'type' => User::USER_TYPE_ADMIN,            
+            'phone' => '(17) 97834-1298',
+            'email' => 'gustavo@gmail.com',
+            'password' => bcrypt('123456')
         ]);
 
         // Criando usuário comum
         User::create([
             'name' => 'Thiago Ferreira Caires',
             'type' => User::USER_TYPE_COMMON,
-            'ddd' => '(17)',
-            'phone' => '99999-9999',
-            'email' => 'b@b.com',
-            'password' => bcrypt('123')
+            'phone' => '(17) 98765-4321',
+            'email' => 'thiago@gmail.com',
+            'password' => bcrypt('123456')
         ]);
 
-        // Criando usuário comum
+        // Criando usuário administrador
         User::create([
             'name' => 'Julio Cesar Ortiz',
             'type' => User::USER_TYPE_ADMIN,
-            'ddd' => '(17)',
-            'phone' => '99999-9999',
-            'email' => 'c@c.com',
-            'password' => bcrypt('123')
+            'phone' => '(17) 94567-8910',
+            'email' => 'julio@gmail.com',
+            'password' => bcrypt('123456')
         ]);
 
         // Criando usuário comum
         User::create([
             'name' => 'Anna Julia',
             'type' => User::USER_TYPE_COMMON,
-            'ddd' => '(17)',
-            'phone' => '99999-9999',
-            'email' => 'd@d.com',
-            'password' => bcrypt('123')
+            'phone' => '(17) 93210-5678',
+            'email' => 'anna@gmail.com',
+            'password' => bcrypt('123456')
         ]);
-        
+
+
         User::factory(5)->create();
     }
 }

@@ -6,10 +6,16 @@ use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+use App\Models\Requerimento;
+use App\Models\Arquivo;
+use App\Models\Marker;
 
 class UserController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth')->only(['create', 'edit', 'update', 'destroy']);
     }
 
@@ -47,15 +53,13 @@ class UserController extends Controller
         $user['password'] = bcrypt($request->password);
         $user['type'] = User::USER_TYPE_COMMON;
 
-        //dd($user);
         $user = User::create($user);
 
         Auth::login($user);
 
         return redirect()
-            ->route('index')           
-            ->with('info', 'Seja bem-vindo(a) '. auth()->user()->name);
-            
+            ->route('index')
+            ->with('info', 'Seja bem-vindo(a) ' . auth()->user()->name);
     }
 
     /**
@@ -95,7 +99,6 @@ class UserController extends Controller
 
         $usuario->update([
             'name' => $request->name,
-            'ddd' => $request->ddd,
             'phone' => $request->phone,
             //'email' => $request->email,
         ]);
@@ -105,7 +108,7 @@ class UserController extends Controller
             ->with('success', 'Perfil atualizado com sucesso!');
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      * UPDATE - Atualiza um registro no Banco de Dados
      * @param  \Illuminate\Http\Request  $request
@@ -119,29 +122,28 @@ class UserController extends Controller
         // Senha atual está correta
         if (password_verify($request->password, $usuario['password'])) {
             // Confirmação da senha nova
-            if($request->newpassword == $request->confirmpassword){
+            if ($request->newpassword == $request->confirmpassword) {
                 // Nova senha é diferente da atual
                 if (!password_verify($request->newpassword, $usuario['password'])) {
-                    
+
                     $usuario->update([
                         'password' => bcrypt($request->newpassword),
                     ]);
-                    
+
                     return redirect()
                         ->route('profile')
                         ->with('success', 'Senha atualizada com sucesso!');
-
-                }else{
+                } else {
                     return redirect()
                         ->route('edit-profile')
                         ->with('message', ['error_user' => 'existPassword']);
                 }
-            }else{
+            } else {
                 return redirect()
                     ->route('edit-profile')
                     ->with('message', ['error_user' => 'invalidConfirm']);
             }
-        }else{
+        } else {
             return redirect()
                 ->route('edit-profile')
                 ->with('message', ['error_user' => 'invalidPassword']);
@@ -154,8 +156,46 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        // Validação da senha atual
+        $request->validate([
+            'password' => 'required|string|min:6|max:50',
+        ]);
+
+        $userId = Auth::id(); // Obtém o ID do usuário autenticado
+        $user = User::find($userId); // Busca o usuário pelo ID
+
+        // Verifica se o usuário foi encontrado e se a senha está correta
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Excluir os registros relacionados nos requerimentos
+            $requerimentos = Requerimento::where('id_usuario', $userId)->get();
+            foreach ($requerimentos as $requerimento) {
+                // Excluir arquivos relacionados
+                Arquivo::where('id_requerimento', $requerimento->id)->delete();
+                // Excluir marcadores relacionados
+                Marker::where('id_requerimento', $requerimento->id)->delete(); // Assumindo que você tem uma relação com marcadores
+                // Excluir o requerimento
+                $requerimento->delete();
+            }
+
+            // Excluir o usuário
+            $user->delete();
+
+            // Desloga o usuário após a exclusão
+            Auth::logout();
+
+            // Redireciona para a página inicial com uma mensagem de sucesso
+            return redirect()->route('index')->with('success', 'Conta deletada com sucesso!');
+        } else {
+            // Mensagens de erro detalhadas
+            if (!$user) {
+                return redirect()->back()->withErrors(['error_user' => 'Usuário não encontrado.']);
+            } elseif (!Hash::check($request->password, $user->password)) {
+                return redirect()->back()->withErrors(['error_user' => 'A senha informada está incorreta.']);
+            } else {
+                return redirect()->back()->withErrors(['error_user' => 'Erro ao deletar conta.']);
+            }
+        }
     }
 }

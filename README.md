@@ -48,13 +48,13 @@ REDIS_PORT=6379
 
 Suba os containers do projeto
 ```sh
-docker-compose up -d
+docker compose up -d
 ```
 
 
 Acessar o container
 ```sh
-docker-compose exec app bash
+docker compose exec app bash
 ```
 
 
@@ -69,7 +69,6 @@ Gere a key do projeto Laravel
 php artisan key:generate
 ```
 
-
 Execute as migrations para criar as tabelas no banco de dados
 ```sh
 php artisan migrate
@@ -78,3 +77,4 @@ php artisan migrate
 
 Acessar o projeto
 [http://localhost:8000](http://localhost:8000)
+

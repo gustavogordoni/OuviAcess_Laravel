@@ -12,11 +12,14 @@ return new class extends Migration {
     {
         Schema::create('markers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_requerimento')->constrained('requerimentos');   
             $table->string('title');
             $table->string('content');
             $table->double('lat');
             $table->double('long');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

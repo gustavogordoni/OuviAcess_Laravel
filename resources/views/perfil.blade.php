@@ -22,13 +22,7 @@
                             name="name">
                     </div>
 
-                    <div class="col-md-3">
-                        <label for="tipo" class="form-label"><strong>DDD:</strong></label>
-                        <input readonly type="text" class="form-control" id="tipo" value="{{ $usuario->ddd }}"
-                            name="ddd">
-                    </div>
-
-                    <div class="col-md-9">
+                    <div class="col-md-12">
                         <label for="bairro" class="form-label"><strong>Telefone: </strong></label>
                         <input readonly type="text" class="form-control" id="phone" value="{{ $usuario->phone }}"
                             name="phone">
@@ -46,10 +40,12 @@
 
                     <div class="mt-5 col-12 row">
                         <div class="col-md-6 mb-3">
-                            <a class="w-100 btn btn-warning rounded-pill px-3 btn-lg" href="{{ route('edit-profile') }}">Alterar informações</a>
+                            <a class="w-100 btn btn-warning rounded-pill px-3 btn-lg"
+                                href="{{ route('edit-profile') }}">Alterar informações</a>
                         </div>
                         <div class="col-md-6">
-                            <button class="w-100 btn btn-danger btn-lg rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Deletar conta</button>
+                            <button class="w-100 btn btn-danger btn-lg rounded-pill px-3" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">Deletar conta</button>
                         </div>
                     </div>
 
@@ -64,8 +60,8 @@
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
-            <form action="excluir-usuario.php" method="POST" class="form my-auto">
-
+            <form action="{{ route('destroy-profile') }}" method="POST" class="form my-auto">
+                @csrf
                 <div class="modal-header">
                     <p class="modal-title fs-4 text-center" id="staticBackdropLabel">Confirme sua senha atual, antes de
                         realizar a exclusão da conta</p>
@@ -73,10 +69,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="col-12 mt-2">
-                        <label for="senha_atual" class="form-label text-center" id="label_atual"><strong>Senha atual:
+                        <label for="password" class="form-label text-center" id="label_atual"><strong>Senha atual:
                             </strong></label>
-                        <input type="password" class="form-control" id="senha_atual" name="senha_atual" required
-                            maxlength="150">
+                        <input type="password" class="form-control" id="password" name="password" required
+                            maxlength="50">
                     </div>
                 </div>
                 <div class="modal-footer mx-auto w-100 d-flex justify-content-center">
@@ -89,12 +85,12 @@
     </div>
 </div>
 
-{{-- NÃO ESTOU USANDO: aguardand adaptar para
+
 <x-alert />
-@if($mensagens = Session::get('message'))
+{{-- @if($mensagens = Session::get('message'))
 @include('layouts.message', ['mensagens' => $mensagens])
-@endif
---}}
+@endif --}}
+
 <x-alert />
 
 @include ('layouts.footer')

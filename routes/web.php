@@ -64,7 +64,7 @@ Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile
 Route::post('/update-profile', [UserController::class, 'update'])->name('update-profile');
 
 /* Deletar perfil */
-Route::get('/delete-profile', [UserController::class, 'destroy'])->name('delete-profile');
+Route::post('/destroy-profile', [UserController::class, 'destroy'])->name('delete-profile');
 
 /* Editar senha */
 Route::get('/edit-password', [UserController::class, 'edit'])->name('edit-password');
