@@ -27,17 +27,11 @@ class StoreUserRequest extends FormRequest
                 'string',
                 'max:255'
             ],
-            'ddd' => [
-                'required',
-                'min:4',
-                'max:4',
-                'regex:/^\([0-9]{2}\)$/',
-            ],
             'phone' => [
                 'required',
-                'min:10',
-                'max:10',
-                'regex:/[0-9]{4,6}-[0-9]{3,4}/'
+                'min:15',
+                'max:15',
+                'regex:/^\(\d{2}\) \d{5}-\d{4}$/'
             ],
             'email' => [
                 'required',
@@ -48,7 +42,7 @@ class StoreUserRequest extends FormRequest
                 'required',
                 'string',
                 'min:6',
-                'max:20'
+                'max:50'
             ]
         ];
     }

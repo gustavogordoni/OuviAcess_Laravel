@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Marker;
+use App\Models\Requerimento;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MarkerFactory extends Factory
@@ -22,6 +23,7 @@ class MarkerFactory extends Factory
     public function definition()
     {
         return [
+            'id_requerimento' => Requerimento::pluck('id')->random(),
             'title' => $this->faker->sentence,
             'content' => $this->faker->sentence,
             'lat' => $this->faker->latitude,

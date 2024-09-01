@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('id_requerimento')->constrained('requerimentos');            
             $table->string('name');    
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

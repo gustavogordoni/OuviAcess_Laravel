@@ -20,8 +20,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'type' => $this->faker->randomElement([1, 2]),
-            'ddd' => '(' . $this->faker->numerify('##') . ')',
-            'phone' => $this->faker->numerify('#####-####'),
+            'phone' => $this->faker->numerify('(##) #####-####'),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('123'),

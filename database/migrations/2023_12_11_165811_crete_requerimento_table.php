@@ -31,9 +31,11 @@ return new class extends Migration
             $table->string('logradouro');
     
             $table->text('resposta')->nullable();            
-            //$table->foreignId('id_administrador')->nullable()->constrained('administrador');
+            //$table->foreignId('id_user')->nullable()->constrained('administrador'); --> IMPLEMENTAR
     
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
     

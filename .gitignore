@@ -21,3 +21,5 @@ Laravel_Terminal.txt
 /public/image/imageRequest
 composer.lock
 /app/Console
+/nbproject/private/
+createTables.sql

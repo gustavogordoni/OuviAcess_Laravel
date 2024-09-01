@@ -9,11 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     
-    use HasFactory;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
     
     const USER_TYPE_ADMIN = 1;
     const USER_TYPE_COMMON = 2;

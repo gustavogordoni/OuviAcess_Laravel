@@ -43,23 +43,12 @@
               </div>
             </div>
 
-            <!-- Input para o DDD -->
-            <div class="col-sm-3">
-              <label for="ddd" class="form-label"><strong>DDD: </strong></label>
-              <input type="tel" class="form-control" id="ddd" name="ddd" required pattern="\([0-9]{2}\)$"
-                title="Digite o DDD no formato (DD)" placeholder="Ex: (17)" value="{{ old('ddd') }}" maxlength="4">
-
-              <div class="invalid-feedback">
-                Informe um valor válido
-              </div>
-            </div>
-
             <!-- Input para o número de telefone -->
-            <div class="col-sm-9">
+            <div class="col-sm-12">
               <label for="phone" class="form-label"><strong>Número de telefone: </strong></label>
-              <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{4,6}-[0-9]{3,4}$"
-                title="Digite o telefone no formato XXXXX-XXXX" placeholder="Ex: 99999-9999" maxlength="10"
-                value="{{ old('phone') }}" maxlength="10">
+              <input type="tel" class="form-control" id="phone" name="phone" required pattern="\(\d{2}\) \d{5}-\d{4}"
+                title="Digite o telefone no formato (XX) XXXXX-XXXX" placeholder="Ex: (99) 99999-9999" maxlength="15"
+                value="{{ old('phone') }}">
               <div class="invalid-feedback">
                 Informe um valor válido
               </div>
@@ -111,35 +100,28 @@
   </main>
 
   <script>
-    const dddInput = document.getElementById("ddd");
     const telefoneInput = document.getElementById("phone");
 
-    dddInput.addEventListener("input", function() {
-      const inputValue = dddInput.value.replace(/\D/g, "");
-      const maxLength = 2;
-      const truncatedValue = inputValue.slice(0, maxLength);
-      const formattedValue = formatDDD(truncatedValue);
-      dddInput.value = formattedValue;
-    });
-
     telefoneInput.addEventListener("input", function() {
-      const inputValue = telefoneInput.value.replace(/\D/g, "");
-      const maxLength = 10;
-      const truncatedValue = inputValue.slice(0, maxLength);
-      const formattedValue = formatTelefone(truncatedValue);
-      telefoneInput.value = formattedValue;
+        const inputValue = telefoneInput.value.replace(/\D/g, "");
+        const maxLength = 11;
+        const truncatedValue = inputValue.slice(0, maxLength);
+        const formattedValue = formatTelefoneComDDD(truncatedValue);
+        telefoneInput.value = formattedValue;
     });
 
-    function formatDDD(value) {
-      const regex = /^(\d{2})$/;
-      const formattedValue = value.replace(regex, "($1)");
-      return formattedValue;
-    }
+    function formatTelefoneComDDD(value) {
+        let formattedValue = value;
 
-    function formatTelefone(value) {
-      const regex = /^(\d{5})(\d{4})$/;
-      const formattedValue = value.replace(regex, "$1-$2");
-      return formattedValue;
+        if (value.length <= 2) {
+            formattedValue = value.replace(/^(\d{0,2})/, "($1");
+        } else if (value.length <= 7) {
+            formattedValue = value.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+        } else {
+            formattedValue = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+        }
+
+        return formattedValue;
     }
 
     function verifica_senhas() {

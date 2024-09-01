@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('type');
             $table->string('name');
-            $table->string('ddd', 4);
-            $table->string('phone', 10);
+            $table->string('phone', 15);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -26,6 +25,7 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->text('profile_photo_path')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
