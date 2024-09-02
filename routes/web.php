@@ -64,7 +64,7 @@ Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile
 Route::post('/update-profile', [UserController::class, 'update'])->name('update-profile');
 
 /* Deletar perfil */
-Route::post('/destroy-profile', [UserController::class, 'destroy'])->name('delete-profile');
+Route::post('/destroy-profile', [UserController::class, 'destroy'])->name('destroy-profile');
 
 /* Editar senha */
 Route::get('/edit-password', [UserController::class, 'edit'])->name('edit-password');
@@ -96,12 +96,24 @@ Route::post('/destoy-request', [RequestController::class, 'destroy'])->name('des
 
 
 /*****************************************************************************************************/
-
 /*--------- Mapa ---------*/
 Route::get('/map', [MarkersController::class, 'index'])->name('map');
 
 
 /*****************************************************************************************************/
+/*--------- Administrador ---------*/
 
-/* Administrador */
+/* Lista de requerimentos */
 Route::get('/requests/{order?}', [AdministratorController::class, 'requests'])->name('requests');
+
+/* Mostrar deltalhes do requerimento */
+Route::get('/admin-show-request/{id}', [AdministratorController::class, 'showRequest'])->name('admin-show-request');
+
+/* Responder requerimentos */
+Route::get('/admin-respond-request/{id}', [AdministratorController::class, 'respondRequest'])->name('admin-respond-request');
+
+/* Deletar requerimento */
+Route::post('/admin-destoy-request', [AdministratorController::class, 'destroyRequest'])->name('admin-destoy-request');
+
+/* Mostrar detalhes do usuário */
+Route::get('/show-user/{id}', [AdministratorController::class, 'showUser'])->name('show-user');
