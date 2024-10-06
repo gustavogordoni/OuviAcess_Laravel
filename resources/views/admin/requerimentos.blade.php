@@ -15,25 +15,36 @@
 @php $layout = "table"; @endphp
 @endempty
 
-<nav aria-label="..." class="mt-3">
-    <ul class="pagination justify-content-center mb-0 ms-3">
-        <li class="page-item disabled">
-            <a class="page-link">Ordenação: </a>
-        </li>
+<form method="GET" action="{{ route('requests') }}">
+    <nav aria-label="..." class="mt-3">
+        <ul class="pagination justify-content-center mb-0 ms-3 me-3">
+            <li class="page-item disabled me-2">
+                <a class="page-link">Filtrar por: </a>
+            </li>
 
-        @if($layout == "table")
-        <li class="page-item active" aria-current="page">
-            <span class="page-link">Tabela</span>
-        </li>
-        <li class="page-item"><a class="page-link" href="{{ route('requests', 'cards') }}">Cards</a></li>
-        @else
-        <li class="page-item"><a class="page-link" href="{{ route('requests', 'table') }}">Tabela</a></li>
-        <li class="page-item active" aria-current="page">
-            <span class="page-link">Cards</span>
-        </li>
-        @endif
-    </ul>
-</nav>
+            <li class="page-item me-2">
+                <select class="form-select" name="filterColumn" id="filterColumn">
+                    <option value="" selected> - </option>
+                    <option value="titulo">Título</option>
+                    <option value="tipo">Tipo</option>
+                    <option value="situacao">Situação</option>
+                    <option value="data">Data</option>
+                </select>
+            </li>
+
+
+            <li class="page-item me-2">
+                <input type="text" name="filterValue" id="filterValue" class="form-control"
+                    placeholder="Informe o parâmetro">
+            </li>
+
+            <li class="page-item">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </li>
+        </ul>
+    </nav>
+</form>
+
 
 @if($layout == "table")
 <div class="table-responsive mt-2">

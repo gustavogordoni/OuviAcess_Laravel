@@ -36,13 +36,13 @@ Route::view('/authentication', 'login')->name('authentication');
 Route::get('/request', [RequestController::class, 'index'])->name('request');
 
 /* Histórico */
-Route::get('/history/{order?}', [RequestController::class, 'create'])->name('history');
+Route::get('/history/{order?}', [RequestController::class, 'create'])->name('history')->middleware('auth');
 
 /* Forumulário de cadastro de usuário */
 Route::get('/register', [UserController::class, 'index'])->name('register');
 
 /* Forumulário de cadastro de administradores */
-Route::get('/registerAdmin', [AdministratorController::class, 'index'])->name('registerAdmin');
+// Route::get('/registerAdmin', [AdministratorController::class, 'index'])->name('registerAdmin');
 
 
 /*****************************************************************************************************/
@@ -55,25 +55,25 @@ Route::post('/store-user', [UserController::class, 'store'])->name('store-user')
 Route::post('/auth', [AuthenticationController::class, 'auth'])->name('auth');
 
 /* Perfil */
-Route::get('/profile', [UserController::class, 'create'])->name('profile');
+Route::get('/profile', [UserController::class, 'create'])->name('profile')->middleware('auth');
 
 /* Editar perfil */
-Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile');
+Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile')->middleware('auth');
 
 /* Atualizar perfil */
-Route::post('/update-profile', [UserController::class, 'update'])->name('update-profile');
+Route::post('/update-profile', [UserController::class, 'update'])->name('update-profile')->middleware('auth');
 
 /* Deletar perfil */
-Route::post('/destroy-profile', [UserController::class, 'destroy'])->name('destroy-profile');
+Route::post('/destroy-profile', [UserController::class, 'destroy'])->name('destroy-profile')->middleware('auth');
 
 /* Editar senha */
-Route::get('/edit-password', [UserController::class, 'edit'])->name('edit-password');
+Route::get('/edit-password', [UserController::class, 'edit'])->name('edit-password')->middleware('auth');
 
 /* Atualizar senha */
-Route::post('/update-password', [UserController::class, 'updatePassword'])->name('update-password');
+Route::post('/update-password', [UserController::class, 'updatePassword'])->name('update-password')->middleware('auth');
 
 /* Logout Usuário */
-Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout')->middleware('auth');
 
 
 /*****************************************************************************************************/
@@ -83,16 +83,16 @@ Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout
 Route::post('/store-request', [RequestController::class, 'store'])->name('store-request');
 
 /* Exibir requerimento */
-Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request');
+Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request')->middleware('auth');
 
 /* Atualizar requerimento */
-Route::post('/update-request', [RequestController::class, 'update'])->name('update-request');
+Route::post('/update-request', [RequestController::class, 'update'])->name('update-request')->middleware('auth');
 
 /* Editar requerimento */
-Route::get('/edit-request/{id}', [RequestController::class, 'edit'])->name('edit-request');
+Route::get('/edit-request/{id}', [RequestController::class, 'edit'])->name('edit-request')->middleware('auth');
 
 /* Deletar requerimento */
-Route::post('/destoy-request', [RequestController::class, 'destroy'])->name('destoy-request');
+Route::post('/destoy-request', [RequestController::class, 'destroy'])->name('destoy-request')->middleware('auth');
 
 
 /*****************************************************************************************************/
@@ -104,16 +104,26 @@ Route::get('/map', [MarkersController::class, 'index'])->name('map');
 /*--------- Administrador ---------*/
 
 /* Lista de requerimentos */
-Route::get('/requests/{order?}', [AdministratorController::class, 'requests'])->name('requests');
+Route::get('/requests/{order?}', [AdministratorController::class, 'requests'])->name('requests')->middleware('auth');
 
 /* Mostrar deltalhes do requerimento */
-Route::get('/admin-show-request/{id}', [AdministratorController::class, 'showRequest'])->name('admin-show-request');
+Route::get('/admin-show-request/{id}', [AdministratorController::class, 'showRequest'])->name('admin-show-request')->middleware('auth');
 
 /* Responder requerimentos */
-Route::get('/admin-respond-request/{id}', [AdministratorController::class, 'respondRequest'])->name('admin-respond-request');
+Route::get('/admin-respond-request/{id}', [AdministratorController::class, 'respondRequest'])->name('admin-respond-request')->middleware('auth');
 
 /* Deletar requerimento */
-Route::post('/admin-destoy-request', [AdministratorController::class, 'destroyRequest'])->name('admin-destoy-request');
+Route::post('/admin-destoy-request', [AdministratorController::class, 'destroyRequest'])->name('admin-destoy-request')->middleware('auth');
+
+
+/* Lista de usuários */
+Route::get('/users/{order?}', [AdministratorController::class, 'users'])->name('users')->middleware('auth');
 
 /* Mostrar detalhes do usuário */
-Route::get('/show-user/{id}', [AdministratorController::class, 'showUser'])->name('show-user');
+Route::get('/show-user/{id}', [AdministratorController::class, 'showUser'])->name('show-user')->middleware('auth');
+
+/* Mostrar deltalhes do usuário */
+Route::get('/admin-show-user/{id}', [AdministratorController::class, 'showUser'])->name('admin-show-user')->middleware('auth');
+
+/* Deletar usuário */
+Route::post('/admin-destoy-user', [AdministratorController::class, 'destroyUser'])->name('admin-destoy-user')->middleware('auth');
