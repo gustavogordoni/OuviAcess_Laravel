@@ -60,7 +60,7 @@
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{ route('destroy-profile') }}" method="POST" class="form my-auto">
+            <form action="{{ route('admin-destroy-user') }}" method="POST" class="form my-auto">
                 @csrf
                 <div class="modal-header">
                     <p class="modal-title fs-4 text-center" id="staticBackdropLabel">Confirme sua senha, antes de
@@ -68,6 +68,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+
                     <div class="col-12 mt-2">
                         <label for="password" class="form-label text-center" id="label_atual"><strong>Senha:
                             </strong></label>
@@ -77,7 +78,7 @@
                 </div>
                 <div class="modal-footer mx-auto w-100 d-flex justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
-                    <button type="submit" class="btn btn-danger" name="deletar">Banir</button>
+                    <button type="submit" class="btn btn-danger" value="{{ $usuario->id }}" name="id">Banir</button>
                 </div>
 
             </form>

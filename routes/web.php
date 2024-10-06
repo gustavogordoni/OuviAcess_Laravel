@@ -36,14 +36,10 @@ Route::view('/authentication', 'login')->name('authentication');
 Route::get('/request', [RequestController::class, 'index'])->name('request');
 
 /* Histórico */
-Route::get('/history/{order?}', [RequestController::class, 'create'])->name('history')->middleware('auth');
+Route::get('/history/{order?}', [RequestController::class, 'create'])->name('history');
 
 /* Forumulário de cadastro de usuário */
 Route::get('/register', [UserController::class, 'index'])->name('register');
-
-/* Forumulário de cadastro de administradores */
-// Route::get('/registerAdmin', [AdministratorController::class, 'index'])->name('registerAdmin');
-
 
 /*****************************************************************************************************/
 /*--------- Usuário Comum ---------*/
@@ -120,10 +116,10 @@ Route::post('/admin-destoy-request', [AdministratorController::class, 'destroyRe
 Route::get('/users/{order?}', [AdministratorController::class, 'users'])->name('users')->middleware('auth');
 
 /* Mostrar detalhes do usuário */
-Route::get('/show-user/{id}', [AdministratorController::class, 'showUser'])->name('show-user')->middleware('auth');
-
-/* Mostrar deltalhes do usuário */
 Route::get('/admin-show-user/{id}', [AdministratorController::class, 'showUser'])->name('admin-show-user')->middleware('auth');
 
+/* Mostrar deltalhes do usuário */
+Route::get('/admin-show-user/{id}', [AdministratorController::class, 'showUser'])->name('admin-admin-show-user')->middleware('auth');
+
 /* Deletar usuário */
-Route::post('/admin-destoy-user', [AdministratorController::class, 'destroyUser'])->name('admin-destoy-user')->middleware('auth');
+Route::post('/admin-destroy-user', [AdministratorController::class, 'destroyUser'])->name('admin-destroy-user')->middleware('auth');

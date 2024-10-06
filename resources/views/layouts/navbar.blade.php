@@ -86,7 +86,7 @@ $class = $arrayTheme['class'];
           @if(auth()->check() && auth()->user()->type == 1)
           <li class="nav-item mx-2">
             <a href="{{ route('users') }}"
-              class="nav-link {{ ativar('users') }}{{ requests('users') }}{{ requests('show-user') }} text-center">
+              class="nav-link {{ ativar('users') }}{{ requests('users') }}{{ requests('admin-show-user') }} text-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="bi d-block mx-auto mb-1" width="15" height="15"
                 fill="currentColor" viewBox="0 0 16 16">
                 <path
@@ -97,7 +97,7 @@ $class = $arrayTheme['class'];
           </li>
           @endif
 
-          @if ((Str::contains(request()->url(), 'show-request')) || (Str::contains(request()->url(), 'show-user')))
+          @if ((Str::contains(request()->url(), 'show-request')) || (Str::contains(request()->url(), 'admin-show-user')))
           <span class="btn btn-primary my-auto mx-1 rounded-circle p-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill"
               viewBox="0 0 16 16">

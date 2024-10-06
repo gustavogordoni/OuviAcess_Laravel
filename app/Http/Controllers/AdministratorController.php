@@ -3,131 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Marker;
 use App\Models\Arquivo;
 use Illuminate\Http\Request;
 use App\Models\Requerimento;
+
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdministratorController extends Controller
 {
-    // public function requests($order = null)
-    // {
-    //     $layout = $order == "cards" ? "cards" : "table";
+    public function requests(Request $request, $order = null)
+    {
+        $layout = $order == "cards" ? "cards" : "table";
 
-    //     if (auth()->check() && auth()->user()->type == 1) {
-    //         $query = Requerimento::query();
+        if (auth()->check() && auth()->user()->type == 1) {
+            $query = Requerimento::query();
 
-    //         if ($order == "date") {
-    //             $query->orderBy('data', 'asc');
-    //             $order = ['date' => 'asc'];
-    //         } elseif ($order == "title") {
-    //             $query->orderBy('titulo', 'asc');
-    //             $order = ['title' => 'asc'];
-    //         } elseif ($order == "id") {
-    //             $query->orderBy('id', 'asc');
-    //             $order = ['id' => 'asc'];
-    //         } else {
-    //             $query->orderBy('data', 'asc');
-    //             $order = ['date' => 'asc'];
-    //         }
+            if ($request->has('filterValue')) {
+                $filterColumn = $request->input('filterColumn');
+                $filterValue = $request->input('filterValue');
 
-    //         $requerimentos = $query->paginate(25);
+                $allowedFilters = ['titulo', 'tipo', 'situacao', 'data', 'id'];
 
-    //         return view('admin.requerimentos', compact('requerimentos', 'order', 'layout'));
-    //     } else {
-    //         $message = ['requests' => 'guest'];
-    //         return view('admin.requerimentos', compact('message'));
-    //     }
-    // }
-
-    // public function requests(Request $request, $order = null)
-    // {
-    //     $layout = $order == "cards" ? "cards" : "table";
-
-    //     if (auth()->check() && auth()->user()->type == 1) {
-    //         $query = Requerimento::query();
-
-    //         if ($request->has('filterColumn') && $request->has('filterValue')) {
-    //             $filterColumn = $request->input('filterColumn');
-    //             $filterValue = $request->input('filterValue');
-                
-    //             $allowedFilters = ['titulo', 'tipo', 'situacao', 'data'];
-    //             if (in_array($filterColumn, $allowedFilters)) {
-    //                 $query->where($filterColumn, 'like', '%' . $filterValue . '%');
-    //             }
-    //         }
-
-    //         if ($order == "date") {
-    //             $query->orderBy('data', 'asc');
-    //             $order = ['date' => 'asc'];
-    //         } elseif ($order == "title") {
-    //             $query->orderBy('titulo', 'asc');
-    //             $order = ['title' => 'asc'];
-    //         } elseif ($order == "id") {
-    //             $query->orderBy('id', 'asc');
-    //             $order = ['id' => 'asc'];
-    //         } else {
-    //             $query->orderBy('data', 'asc');
-    //             $order = ['date' => 'asc'];
-    //         }
-
-    //         $requerimentos = $query->paginate(25);
-
-    //         return view('admin.requerimentos', compact('requerimentos', 'order', 'layout'));
-    //     } else {
-    //         $message = ['requests' => 'guest'];
-    //         return view('admin.requerimentos', compact('message'));
-    //     }
-    // }
-
-    public function requests(Request $request)
-{
-    $layout = $request->get('layout', 'table'); // Padrão para 'table' se não for definido
-    $order = $request->get('order', null); // Ordenação pode ser definida via query string
-
-    if (auth()->check() && auth()->user()->type == 1) {
-        $query = Requerimento::query();
-
-        // Lógica de filtragem
-        if ($request->has('filterValue')) {
-            $filterValue = $request->input('filterValue');
-            $filterColumn = $request->input('filterColumn');
-
-            // Verifica se a coluna de filtro foi selecionada
-            if ($filterColumn && $filterColumn != '') {
-                // Filtra pela coluna específica
-                $query->where($filterColumn, 'like', '%' . $filterValue . '%');
-            } else {
-                // Se nenhuma coluna for selecionada, filtra em todas as colunas definidas
-                $query->where(function ($q) use ($filterValue) {
-                    $q->where('titulo', 'like', '%' . $filterValue . '%')
-                      ->orWhere('tipo', 'like', '%' . $filterValue . '%')
-                      ->orWhere('situacao', 'like', '%' . $filterValue . '%')
-                      ->orWhere('data', 'like', '%' . $filterValue . '%');
-                });
+                if ($filterColumn && in_array($filterColumn, $allowedFilters)) {
+                    $query->where($filterColumn, 'like', '%' . $filterValue . '%');
+                } else {
+                    $query->where(function ($q) use ($filterValue) {
+                        $q->where('titulo', 'like', '%' . $filterValue . '%')
+                            ->orWhere('tipo', 'like', '%' . $filterValue . '%')
+                            ->orWhere('situacao', 'like', '%' . $filterValue . '%')
+                            ->orWhere('data', 'like', '%' . $filterValue . '%')
+                            ->orWhere('id', 'like', '%' . $filterValue . '%');
+                    });
+                }
             }
+
+            if ($order == "date") {
+                $query->orderBy('data', 'asc');
+            } elseif ($order == "title") {
+                $query->orderBy('titulo', 'asc');
+            } elseif ($order == "id") {
+                $query->orderBy('id', 'asc');
+            } else {
+                $query->orderBy('data', 'asc');
+            }
+
+            $requerimentos = $query->paginate(25)->appends(request()->except('page'));
+
+            return view('admin.requerimentos', compact('requerimentos', 'order', 'layout'));
+        } else {
+            $message = ['requests' => 'guest'];
+            return view('admin.requerimentos', compact('message'));
         }
-
-        // Lógica de ordenação
-        if ($order == "date") {
-            $query->orderBy('data', 'asc');
-        } elseif ($order == "title") {
-            $query->orderBy('titulo', 'asc');
-        } elseif ($order == "id") {
-            $query->orderBy('id', 'asc');
-        }
-
-        $requerimentos = $query->paginate(25);
-
-        return view('admin.requerimentos', compact('requerimentos', 'order', 'layout'));
-    } else {
-        $message = ['requests' => 'guest'];
-        return view('admin.requerimentos', compact('message'));
     }
-}
-
-
-
     public function showRequest($id)
     {
         $arquivos = Arquivo::where('id_requerimento', $id)->get();
@@ -150,30 +79,43 @@ class AdministratorController extends Controller
 
         $requerimento = Requerimento::find($request->id);
         $requerimento->delete();
-        return redirect()->route('history')->with('success', 'Requerimento excluído com sucesso!');
+        return redirect()->route('admin.requerimentos')->with('success', 'Requerimento excluído com sucesso!');
     }
 
-
-    public function users($order = null)
+    // --------------------------------------------------------------------------------------------------
+    public function users(Request $request, $order = null)
     {
         if (auth()->check() && auth()->user()->type == 1) {
-            $query = User::query()->where('type', '=', 2); // Apenas clientes
+            $query = User::query()->where('type', '=', 2);
+
+            if ($request->has('filterValue')) {
+                $filterColumn = $request->input('filterColumn');
+                $filterValue = $request->input('filterValue');
+
+                $allowedFilters = ['name', 'email', 'id'];
+
+                if ($filterColumn && in_array($filterColumn, $allowedFilters)) {
+                    $query->where($filterColumn, 'like', '%' . $filterValue . '%');
+                } else {
+                    $query->where(function ($q) use ($filterValue) {
+                        $q->where('name', 'like', '%' . $filterValue . '%')
+                            ->orWhere('email', 'like', '%' . $filterValue . '%')
+                            ->orWhere('id', 'like', '%' . $filterValue . '%');
+                    });
+                }
+            }
 
             if ($order == "id") {
                 $query->orderBy('id', 'asc');
-                $order = ['id' => 'asc'];
             } elseif ($order == "name") {
                 $query->orderBy('name', 'asc');
-                $order = ['name' => 'asc'];
             } elseif ($order == "email") {
                 $query->orderBy('email', 'asc');
-                $order = ['email' => 'asc'];
             } else {
                 $query->orderBy('id', 'asc');
-                $order = ['id' => 'asc'];
             }
 
-            $usuarios = $query->paginate(25);
+            $usuarios = $query->paginate(25)->appends(request()->except('page'));
 
             return view('admin.usuarios', compact('usuarios', 'order'));
         } else {
@@ -190,16 +132,26 @@ class AdministratorController extends Controller
     public function destroyUser(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'id' => 'required|exists:users,id',
+            'password' => 'required|string|min:6|max:50',
         ]);
 
-        $user = User::find($request->user_id);
+        $userId = $request->id;
+        $user = User::find($userId);
 
-        if ($user) {
+        if ($user && Hash::check($request->password, auth()->user()->password)) {
+            $requerimentos = Requerimento::where('id_usuario', $userId)->get();
+
+            foreach ($requerimentos as $requerimento) {
+                Arquivo::where('id_requerimento', $requerimento->id)->delete();
+                Marker::where('id_requerimento', $requerimento->id)->delete();
+                $requerimento->delete();
+            }
+
             $user->delete();
-            return redirect()->route('users')->with('success', 'Usuário deletado com sucesso!');
+            return redirect()->route('users')->with('success', 'Conta banida com sucesso!');
+        } else {
+            return redirect()->back()->withErrors(['error_user' => 'A senha informada está6 incorreta!']);
         }
-
-        return redirect()->route('users')->with('error', 'Usuário não encontrado.');
     }
 }

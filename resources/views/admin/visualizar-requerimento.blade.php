@@ -140,7 +140,7 @@
                     <div class="col-12 border p-3 rounded-5 mt-5">
                         <h3 class="">Cliente responsável:
                             <a class="cor_tema link-underline link-underline-opacity-0"
-                                href="{{ route('show-user', $requerimento->id_usuario) }}">
+                                href="{{ route('admin-show-user', $requerimento->id_usuario) }}">
                                 {{ $usuario->name }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor"
                                     class="bi bi-info-circle" viewBox="0 0 16 16">
