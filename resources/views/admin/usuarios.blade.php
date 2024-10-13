@@ -66,7 +66,7 @@
                 <td>{{ $usuario->name }}</td>
                 <td>{{ $usuario->email }}</td>
                 <td>
-                    <a href="{{ route('admin-admin-show-user', $usuario->id) }}"
+                    <a href="{{ route('admin-show-user', $usuario->id) }}"
                         class=" btn btn-outline-primary my-auto mx-1 rounded-circle p-2" name="visualizar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-eye-fill" viewBox="0 0 16 16">
