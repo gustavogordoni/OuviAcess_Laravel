@@ -66,6 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
     
     /* Logout Usuário */
     Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout');
+
+    Route::get('/admin/{id}', [AdministratorController::class, 'index'])->name('admin');
 });
 
 /*****************************************************************************************************/

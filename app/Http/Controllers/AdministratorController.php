@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use App\Models\Marker;
 use App\Models\Arquivo;
-use Illuminate\Http\Request;
 use App\Models\Requerimento;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AdministratorController extends Controller
 {
     public function requests(Request $request, $order = null)
     {
+        $validated = $request->validate([
+            'filterColumn' => 'nullable|string|in:titulo,tipo,situacao,data,id,id_usuario',
+            'filterValue' => 'nullable|string|max:255'
+        ]);
+
         $layout = $order == "cards" ? "cards" : "table";
 
         if (auth()->check() && auth()->user()->type == 1) {
@@ -46,16 +52,22 @@ class AdministratorController extends Controller
                 }
             }
 
-            if ($order == "date") {
-                $query->orderBy('data', 'asc');
-            } elseif ($order == "title") {
-                $query->orderBy('titulo', 'asc');
-            } elseif ($order == "id") {
-                $query->orderBy('id', 'asc');
-            } elseif ($order == "id_usuario") {
-                $query->orderBy('id_usuario', 'asc');
-            } else {
-                $query->orderBy('data', 'asc');
+            switch ($order) {
+                case "date":
+                    $query->orderBy('data', 'asc');
+                    break;
+                case "title":
+                    $query->orderBy('titulo', 'asc');
+                    break;
+                case "id":
+                    $query->orderBy('id', 'asc');
+                    break;
+                case "id_usuario":
+                    $query->orderBy('id_usuario', 'asc');
+                    break;
+                default:
+                    $query->orderBy('data', 'asc');
+                    break;
             }
 
             $requerimentos = $query->paginate(25)->appends(request()->except('page'));
@@ -69,34 +81,47 @@ class AdministratorController extends Controller
 
     public function showRequest($id)
     {
-        $arquivos = Arquivo::where('id_requerimento', $id)->get();
-        $requerimento = Requerimento::where('id', $id)->first();
-        $usuario = User::where('id', $requerimento->id_usuario)->first();
-        return view('admin.visualizar-requerimento', compact('requerimento', 'arquivos', 'usuario'));
+        try {
+            $arquivos = Arquivo::where('id_requerimento', $id)->get();
+            $requerimento = Requerimento::findOrFail($id);
+            $usuario = User::findOrFail($requerimento->id_usuario);
+            $admin = User::where('id', $requerimento->id_administrador)->first();
+
+            return view('admin.visualizar-requerimento', compact('requerimento', 'arquivos', 'usuario', 'admin'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->withErrors(['error_request' => 'Requerimento ou usuário não encontrado.']);
+        }
     }
 
     public function respondRequest($id)
     {
-        $arquivos = Arquivo::where('id_requerimento', $id)->get();
+        try {
+            $requerimento = Requerimento::findOrFail($id);
+            $arquivos = Arquivo::where('id_requerimento', $id)->get();
 
-        $requerimento = Requerimento::where('id', $id)->first();
-        return view('admin.responder', compact('requerimento', 'arquivos'));
+            return view('admin.responder', compact('requerimento', 'arquivos'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->withErrors(['error_request' => 'Requerimento não encontrado.']);
+        }
     }
 
     public function destroyRequest(Request $request)
     {
-        Arquivo::where('id_requerimento', $request->id)->delete();
+        try {
+            $requerimento = Requerimento::findOrFail($request->id);
+            Arquivo::where('id_requerimento', $request->id)->delete();
+            $requerimento->delete();
 
-        $requerimento = Requerimento::find($request->id);
-        $requerimento->delete();
-        return redirect()->route('admin.requerimentos')->with('success', 'Requerimento excluído com sucesso!');
+            return redirect()->route('admin.requerimentos')->with('success', 'Requerimento excluído com sucesso!');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->withErrors(['error_request' => 'Requerimento não encontrado.']);
+        }
     }
-
     // --------------------------------------------------------------------------------------------------
     public function users(Request $request, $order = null)
     {
         if (auth()->check() && auth()->user()->type == 1) {
-            $query = User::query()->where('type', '=', 2);
+            $query = User::query()->where('type', 2);
 
             if ($request->has('filterValue')) {
                 $filterColumn = $request->input('filterColumn');
@@ -115,15 +140,11 @@ class AdministratorController extends Controller
                 }
             }
 
-            if ($order == "id") {
-                $query->orderBy('id', 'asc');
-            } elseif ($order == "name") {
-                $query->orderBy('name', 'asc');
-            } elseif ($order == "email") {
-                $query->orderBy('email', 'asc');
-            } else {
-                $query->orderBy('id', 'asc');
-            }
+            $query->when($order, function ($q, $order) {
+                $q->orderBy($order, 'asc');
+            }, function ($q) {
+                $q->orderBy('id', 'asc');
+            });
 
             $usuarios = $query->paginate(25)->appends(request()->except('page'));
 
@@ -136,9 +157,14 @@ class AdministratorController extends Controller
 
     public function showUser($id)
     {
-        $usuario = User::where('id', $id)->first();
-        return view('admin.visualizar-usuario', compact('usuario'));
+        try {
+            $usuario = User::findOrFail($id);
+            return view('admin.visualizar-usuario', compact('usuario'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->withErrors(['error_user' => 'Usuário não encontrado.']);
+        }
     }
+
     public function destroyUser(Request $request)
     {
         $request->validate([
@@ -146,22 +172,34 @@ class AdministratorController extends Controller
             'password' => 'required|string|min:6|max:50',
         ]);
 
-        $userId = $request->id;
-        $user = User::find($userId);
+        try {
+            if (Hash::check($request->password, auth()->user()->password)) {
+                $user = User::findOrFail($request->id);
 
-        if ($user && Hash::check($request->password, auth()->user()->password)) {
-            $requerimentos = Requerimento::where('id_usuario', $userId)->get();
+                $requerimentos = Requerimento::where('id_usuario', $user->id)->get();
+                foreach ($requerimentos as $requerimento) {
+                    Arquivo::where('id_requerimento', $requerimento->id)->delete();
+                    Marker::where('id_requerimento', $requerimento->id)->delete();
+                    $requerimento->delete();
+                }
 
-            foreach ($requerimentos as $requerimento) {
-                Arquivo::where('id_requerimento', $requerimento->id)->delete();
-                Marker::where('id_requerimento', $requerimento->id)->delete();
-                $requerimento->delete();
+                $user->delete();
+                return redirect()->route('users')->with('success', 'Conta banida com sucesso!');
+            } else {
+                return redirect()->back()->withErrors(['error_user' => 'A senha informada está incorreta!']);
             }
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->withErrors(['error_user' => 'Usuário não encontrado.']);
+        }
+    }
 
-            $user->delete();
-            return redirect()->route('users')->with('success', 'Conta banida com sucesso!');
-        } else {
-            return redirect()->back()->withErrors(['error_user' => 'A senha informada está6 incorreta!']);
+    public function index($id)
+    {
+        try {
+            $admin = User::where('type', 1)->findOrFail($id);
+            return view('admin.visualizar-administrador', compact('admin'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->withErrors(['error_admin' => 'Administrador não encontrado.']);
         }
     }
 }

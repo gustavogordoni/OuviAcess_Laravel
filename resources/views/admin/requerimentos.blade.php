@@ -27,7 +27,7 @@
                     <option value="situacao" {{ request('filterColumn')=='situacao' ? 'selected' : '' }}>Situação
                     </option>
                     <option value="data" {{ request('filterColumn')=='data' ? 'selected' : '' }}>Data</option>
-                    <option value="id_usuario" {{ request('filterColumn')=='id_usuario' ? 'selected' : '' }}>Usuário
+                    <option value="id_usuario" {{ request('filterColumn')=='id_usuario' ? 'selected' : '' }}>Cliente
                     </option>
 
                 </select>
@@ -56,7 +56,7 @@
                         href="{{ route('requests', ['order' => 'id', 'filterColumn' => request('filterColumn'), 'filterValue' => request('filterValue')]) }}">ID</a>
                 </th>
                 {{-- REMOVE --}}
-                <th scope="col" style="width:2%;"><strong>Usuário</strong></th>
+                <th scope="col" style="width:2%;"><strong>Cliente</strong></th>
                 <th scope="col" style="width:15%;">
                     <a class="link-info"
                         href="{{ route('requests', ['order' => 'title', 'filterColumn' => request('filterColumn'), 'filterValue' => request('filterValue')]) }}">Título</a>

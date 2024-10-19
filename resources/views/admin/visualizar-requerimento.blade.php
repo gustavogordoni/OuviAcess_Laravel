@@ -137,7 +137,7 @@
                         @endif
                     @endisset
 
-                    <div class="col-12 border p-3 rounded-5 mt-5">
+                    <div class="col-12 border p-3 rounded-5 mt-3">
                         <h3 class="">Cliente responsável:
                             <a class="cor_tema link-underline link-underline-opacity-0"
                                 href="{{ route('admin-show-user', $requerimento->id_usuario) }}">
@@ -154,13 +154,13 @@
                         </h3>                       
                     </div>
 
-                    {{-- @if(isset($requerimento->resposta ) && !empty($requerimento->resposta))
-                    <div class="col-12 border p-4 rounded-5 mt-5">
-                        @isset($requerimento->id_usuario)
+                    @if(isset($requerimento->resposta ) && !empty($requerimento->resposta))
+                    <div class="col-12 border p-4 rounded-5 mt-3">
+                        @isset($requerimento->id_administrador)
                         <h3 class="mb-3">Administrador:
                             <a class="cor_tema link-underline link-underline-opacity-0"
-                                href="visualizar-administrador.php?id={{ $requerimento->id_usuario }}">
-                                {{ $requerimento->resposta }}
+                                href="{{ route('admin', $requerimento->id_administrador) }}">
+                                {{ $admin->name }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor"
                                     class="bi bi-info-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z">
@@ -189,15 +189,16 @@
                                     @break
                                 @case('Recusado')
                                     <strong class="text-danger">{{ strtoupper($requerimento->situacao) }}</strong>
+                                    
                                     @break
                             @endswitch
                         </label>
                         <br>
                         <label for="resposta" class="form-label"><strong>Resposta: </strong></label>
                         <textarea readonly class="form-control" id="resposta" style="height: 150px"
-                            name="resposta">{{ $rowRequeriemento['resposta'] }}</textarea>
+                            name="resposta">{{ $requerimento->resposta }}</textarea>
                     </div>
-                    @endif --}}
+                    @endif
 
                     <div class="mt-4 col-12 row">
                         <div class="col-md-6 mb-3">

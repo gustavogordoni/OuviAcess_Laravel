@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string('logradouro');
     
             $table->text('resposta')->nullable();            
-            // $table->unsignedBigInteger('id_administrador')->nullable(); ---> ao invés de criar uma nova tabela
-            // $table->foreign('id_administrador')->references('id')->on('users');  --> Implementar
+            $table->unsignedBigInteger('id_administrador')->nullable();
+            $table->foreign('id_administrador')->references('id')->on('users');
     
             $table->timestamps();
             $table->softDeletes();

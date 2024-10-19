@@ -17,18 +17,32 @@ class RequerimentoFactory extends Factory
      */
     public function definition()
     {
+        $respostaPreenchida = $this->faker->randomElement([true, false]);
+
+        $situacao = $respostaPreenchida ? $this->faker->randomElement(['Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']) : $this->faker->randomElement(['Pendente', 'Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']);
+
+        $usuarios = User::pluck('id');
+
+        if ($usuarios->isEmpty()) {
+            $id_usuario = null;
+        } else {
+            $id_usuario = $usuarios->random();
+        }
+
         return [
-            'id_usuario' => User::pluck('id')->random(),
+            'id_usuario' => $id_usuario,
             'titulo' => $this->faker->word,
             'tipo' => $this->faker->randomElement(['Denúncia', 'Sugestão']),
-            'situacao' => $this->faker->randomElement(['Pendente', 'Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']),
+            'situacao' => $situacao,
             'data' => $this->faker->unique()->date,
             'descricao' => $this->faker->text,
             'cep' => $this->faker->numerify('##.###-###'),
             'cidade' => $this->faker->city,
             'bairro' => $this->faker->word,
             'logradouro' => $this->faker->streetName,
-            'resposta' => $this->faker->text,
+
+            'resposta' => $respostaPreenchida ? $this->faker->text : null,
+            'id_administrador' => $respostaPreenchida ? User::where('type', 1)->pluck('id')->random() : null,
         ];
     }
 }
