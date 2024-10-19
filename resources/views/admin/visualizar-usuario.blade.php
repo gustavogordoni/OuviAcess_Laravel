@@ -41,7 +41,8 @@
                     <div class="mt-5 col-12 row">
                         <div class="col-md-6 mb-3">
                             <a class="w-100 btn btn-warning rounded-pill px-3 btn-lg"
-                                href="{{ route('requests') }}">Requerimentos realizados</a>
+                                href=" {{ route('requests', ['filterColumn' => 'id_usuario', 'filterValue' => $usuario->id]) }}">Requerimentos
+                                realizados</a>
                         </div>
                         <div class="col-md-6">
                             <button class="w-100 btn btn-danger btn-lg rounded-pill px-3" data-bs-toggle="modal"

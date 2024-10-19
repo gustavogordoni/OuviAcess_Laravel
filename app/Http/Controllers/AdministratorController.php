@@ -24,17 +24,24 @@ class AdministratorController extends Controller
                 $filterColumn = $request->input('filterColumn');
                 $filterValue = $request->input('filterValue');
 
-                $allowedFilters = ['titulo', 'tipo', 'situacao', 'data', 'id'];
+                $allowedFilters = ['titulo', 'tipo', 'situacao', 'data', 'id', 'id_usuario'];
 
                 if ($filterColumn && in_array($filterColumn, $allowedFilters)) {
-                    $query->where($filterColumn, 'like', '%' . $filterValue . '%');
-                } else {
+                    if ($filterColumn == 'id_usuario') {
+                        $query->whereHas('usuario', function ($q) use ($filterValue) {
+                            $q->where('id', $filterValue);
+                        });
+                    } else {
+                        $query->where($filterColumn, 'like', '%' . $filterValue . '%');
+                    }
+                } elseif ($filterValue) {
                     $query->where(function ($q) use ($filterValue) {
                         $q->where('titulo', 'like', '%' . $filterValue . '%')
                             ->orWhere('tipo', 'like', '%' . $filterValue . '%')
                             ->orWhere('situacao', 'like', '%' . $filterValue . '%')
                             ->orWhere('data', 'like', '%' . $filterValue . '%')
-                            ->orWhere('id', 'like', '%' . $filterValue . '%');
+                            ->orWhere('id', $filterValue)
+                            ->orWhere('id_usuario', $filterValue);
                     });
                 }
             }
@@ -45,6 +52,8 @@ class AdministratorController extends Controller
                 $query->orderBy('titulo', 'asc');
             } elseif ($order == "id") {
                 $query->orderBy('id', 'asc');
+            } elseif ($order == "id_usuario") {
+                $query->orderBy('id_usuario', 'asc');
             } else {
                 $query->orderBy('data', 'asc');
             }
@@ -57,6 +66,7 @@ class AdministratorController extends Controller
             return view('admin.requerimentos', compact('message'));
         }
     }
+
     public function showRequest($id)
     {
         $arquivos = Arquivo::where('id_requerimento', $id)->get();

@@ -27,6 +27,9 @@
                     <option value="situacao" {{ request('filterColumn')=='situacao' ? 'selected' : '' }}>Situação
                     </option>
                     <option value="data" {{ request('filterColumn')=='data' ? 'selected' : '' }}>Data</option>
+                    <option value="id_usuario" {{ request('filterColumn')=='id_usuario' ? 'selected' : '' }}>Usuário
+                    </option>
+
                 </select>
             </li>
 
@@ -43,6 +46,7 @@
 </form>
 
 <div class="table-responsive mt-2">
+
     <table class="table table-striped table-md mb-0">
 
         <thead>
@@ -51,6 +55,8 @@
                     <a class="link-info"
                         href="{{ route('requests', ['order' => 'id', 'filterColumn' => request('filterColumn'), 'filterValue' => request('filterValue')]) }}">ID</a>
                 </th>
+                {{-- REMOVE --}}
+                <th scope="col" style="width:2%;"><strong>Usuário</strong></th>
                 <th scope="col" style="width:15%;">
                     <a class="link-info"
                         href="{{ route('requests', ['order' => 'title', 'filterColumn' => request('filterColumn'), 'filterValue' => request('filterValue')]) }}">Título</a>
@@ -70,6 +76,8 @@
             @foreach($requerimentos as $requerimento)
             <tr>
                 <td>{{ $requerimento->id }}</td>
+                {{-- REMOVE --}}
+                <td><a href="{{ route('admin-show-user', $requerimento->id_usuario) }}">{{ $requerimento->id_usuario }}</a></td>
                 <td>{{ $requerimento->titulo }}</td>
                 <td>{{ $requerimento->tipo }}</td>
 
@@ -124,9 +132,10 @@
             <div class="modal fade" id="staticBackdrop-{{ $requerimento->id }}" data-bs-backdrop="static"
                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog  modal-dialog-centered">
-                    <div class="modal-content"> 
+                    <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5 text-center text-warning" id="staticBackdropLabel">Deseja
+                            <h1 class="modal-title fs-5 text-center text-warning" id="staticBackdropLabel">
+                                Deseja
                                 excluir permanentemente este requerimento?</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
