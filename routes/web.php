@@ -72,10 +72,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 /*****************************************************************************************************/
 /*--------- Usuário Comum ---------*/
-Route::group(['middleware' => 'client'], function () {            
-    /* Cadastro Requerimento */
-    Route::post('/store-request', [RequestController::class, 'store'])->name('store-request');
-    
+Route::group(['middleware' => 'client'], function () {               
     /* Exibir requerimento */
     Route::get('/show-request/{id}', [RequestController::class, 'show'])->name('show-request');
     
@@ -125,4 +122,7 @@ Route::group(['middleware' => 'guestOrClient'], function () {
     
     /* Requerimentos */
     Route::get('/request', [RequestController::class, 'index'])->name('request');
+
+    /* Cadastro Requerimento */
+    Route::post('/store-request', [RequestController::class, 'store'])->name('store-request');
 });
