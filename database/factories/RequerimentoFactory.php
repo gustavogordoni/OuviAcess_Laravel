@@ -19,9 +19,9 @@ class RequerimentoFactory extends Factory
     {
         $respostaPreenchida = $this->faker->randomElement([true, false]);
 
-        $situacao = $respostaPreenchida ? $this->faker->randomElement(['Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']) : $this->faker->randomElement(['Pendente', 'Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']);
+        $situacao = $respostaPreenchida ? $this->faker->randomElement(['Em andamento', 'Concluído', 'Recusado', 'Informações incompletas']) : 'Pendente';
 
-        $usuarios = User::pluck('id');
+        $usuarios = User::where('type', 2)->pluck('id');
 
         if ($usuarios->isEmpty()) {
             $id_usuario = null;

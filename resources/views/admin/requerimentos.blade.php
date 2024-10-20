@@ -77,7 +77,8 @@
             <tr>
                 <td>{{ $requerimento->id }}</td>
                 {{-- REMOVE --}}
-                <td><a href="{{ route('admin-show-user', $requerimento->id_usuario) }}">{{ $requerimento->id_usuario }}</a></td>
+                <td><a href="{{ route('admin-show-user', $requerimento->id_usuario) }}">{{ $requerimento->id_usuario
+                        }}</a></td>
                 <td>{{ $requerimento->titulo }}</td>
                 <td>{{ $requerimento->tipo }}</td>
 
@@ -154,11 +155,13 @@
             @endforeach
         </tbody>
     </table>
+
+    <div class="d-flex justify-content-center mt-3">{{ $requerimentos->links('pagination::bootstrap-4') }}</div>
 </div>
 
 {{-- Mantenha: Verifica se existe requerimentos cadastrados pelo user --}}
 @else
-<x-HistoryEmpty />
+<x-Empty :message="'Nenhum requerimento encontrado com o parâmetro informado'" />
 @endif
 
 {{-- Mantenha: Exibe caso o usuário não estiver autenticado --}}

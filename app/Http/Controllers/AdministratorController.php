@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Models\User;
 use App\Models\Marker;
 use App\Models\Arquivo;
@@ -105,6 +104,23 @@ class AdministratorController extends Controller
         }
     }
 
+    public function updateRequest(Request $request)
+    {
+        $request->validate([
+            'situacao' => 'required|in:Concluído,Recusado,Informações incompletas',
+            'resposta' => 'required|min:10',
+        ]);
+
+        $requerimento = Requerimento::find($request->id);
+        $requerimento->situacao = $request->situacao;
+        $requerimento->resposta = $request->resposta;
+        $requerimento->id_administrador = auth()->user()->id;
+        $requerimento->save();
+
+        return redirect()->route('requests')->with('success', 'Resposta cadastrada com sucesso.');
+    }
+
+
     public function destroyRequest(Request $request)
     {
         try {
@@ -112,7 +128,7 @@ class AdministratorController extends Controller
             Arquivo::where('id_requerimento', $request->id)->delete();
             $requerimento->delete();
 
-            return redirect()->route('admin.requerimentos')->with('success', 'Requerimento excluído com sucesso!');
+            return redirect()->route('requests')->with('success', 'Requerimento excluído com sucesso!');
         } catch (ModelNotFoundException $e) {
             return redirect()->back()->withErrors(['error_request' => 'Requerimento não encontrado.']);
         }

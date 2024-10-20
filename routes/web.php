@@ -98,8 +98,11 @@ Route::group(['middleware' => 'admin'], function () {
     /* Mostrar deltalhes do requerimento */
     Route::get('/admin-show-request/{id}', [AdministratorController::class, 'showRequest'])->name('admin-show-request');
     
-    /* Responder requerimentos */
+    /* Formulário para Responder requerimentos */
     Route::get('/admin-respond-request/{id}', [AdministratorController::class, 'respondRequest'])->name('admin-respond-request');
+
+    /* Responder requerimentos */
+    Route::post('/admin-update-request', [AdministratorController::class, 'updateRequest'])->name('admin-update-request');
     
     /* Deletar requerimento */
     Route::post('/admin-destoy-request', [AdministratorController::class, 'destroyRequest'])->name('admin-destoy-request');

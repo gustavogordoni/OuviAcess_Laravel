@@ -35,7 +35,7 @@
             <li class="page-item">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
             </li>
-        </ul>
+        </ul>       
     </nav>
 </form>
 
@@ -109,8 +109,8 @@
                 </div>
             </div> --}}
 
-            <div class="modal fade" id="staticBackdrop-{{ $usuario->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="staticBackdrop-{{ $usuario->id }}" data-bs-backdrop="static"
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog  modal-dialog-centered">
                     <div class="modal-content">
                         <form action="{{ route('admin-destroy-user') }}" method="POST" class="form my-auto">
@@ -144,11 +144,13 @@
             @endforeach
         </tbody>
     </table>
+
+    <div class="d-flex justify-content-center mt-3">{{ $usuarios->links('pagination::bootstrap-4') }}</div>
 </div>
 
 {{-- Mantenha: Verifica se existe usuarios cadastrados pelo user --}}
 @else
-<x-HistoryEmpty />
+<x-Empty :message="'Nenhum cliente encontrado com o parâmetro informado'" />
 @endif
 
 {{-- Mantenha: Exibe caso o usuário não estiver autenticado --}}
