@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('requerimentos', function (Blueprint $table) {
             $table->id();
-            //$table->foreignId('id_usuario')->nullable()->constrained('usuarios');
             $table->unsignedBigInteger('id_usuario')->nullable();
             $table->foreign('id_usuario')->references('id')->on('users');
             
@@ -31,7 +30,8 @@ return new class extends Migration
             $table->string('logradouro');
     
             $table->text('resposta')->nullable();            
-            //$table->foreignId('id_user')->nullable()->constrained('administrador'); --> IMPLEMENTAR
+            $table->unsignedBigInteger('id_administrador')->nullable();
+            $table->foreign('id_administrador')->references('id')->on('users');
     
             $table->timestamps();
             $table->softDeletes();

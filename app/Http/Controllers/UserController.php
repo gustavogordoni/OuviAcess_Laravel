@@ -100,7 +100,6 @@ class UserController extends Controller
         $usuario->update([
             'name' => $request->name,
             'phone' => $request->phone,
-            //'email' => $request->email,
         ]);
 
         return redirect()
@@ -119,11 +118,8 @@ class UserController extends Controller
     {
         $usuario = User::find(auth()->user()->id);
 
-        // Senha atual está correta
         if (password_verify($request->password, $usuario['password'])) {
-            // Confirmação da senha nova
             if ($request->newpassword == $request->confirmpassword) {
-                // Nova senha é diferente da atual
                 if (!password_verify($request->newpassword, $usuario['password'])) {
 
                     $usuario->update([
@@ -158,37 +154,27 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        // Validação da senha atual
         $request->validate([
             'password' => 'required|string|min:6|max:50',
         ]);
 
-        $userId = Auth::id(); // Obtém o ID do usuário autenticado
-        $user = User::find($userId); // Busca o usuário pelo ID
+        $userId = Auth::id();
+        $user = User::find($userId);
 
-        // Verifica se o usuário foi encontrado e se a senha está correta
         if ($user && Hash::check($request->password, $user->password)) {
-            // Excluir os registros relacionados nos requerimentos
             $requerimentos = Requerimento::where('id_usuario', $userId)->get();
             foreach ($requerimentos as $requerimento) {
-                // Excluir arquivos relacionados
                 Arquivo::where('id_requerimento', $requerimento->id)->delete();
-                // Excluir marcadores relacionados
-                Marker::where('id_requerimento', $requerimento->id)->delete(); // Assumindo que você tem uma relação com marcadores
-                // Excluir o requerimento
+                Marker::where('id_requerimento', $requerimento->id)->delete();
                 $requerimento->delete();
             }
 
-            // Excluir o usuário
             $user->delete();
 
-            // Desloga o usuário após a exclusão
             Auth::logout();
 
-            // Redireciona para a página inicial com uma mensagem de sucesso
             return redirect()->route('index')->with('success', 'Conta deletada com sucesso!');
         } else {
-            // Mensagens de erro detalhadas
             if (!$user) {
                 return redirect()->back()->withErrors(['error_user' => 'Usuário não encontrado.']);
             } elseif (!Hash::check($request->password, $user->password)) {

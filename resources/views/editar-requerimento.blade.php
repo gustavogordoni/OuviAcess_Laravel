@@ -4,51 +4,6 @@
 @section('body')
 @include ('layouts.funcoes')
 
-@php
-/*
-$id_requerimento = filter_input(INPUT_GET, "editar", FILTER_SANITIZE_NUMBER_INT);
-
-if (autenticado()) {
-    $id_usuario = $_SESSION["id_usuario"];
-} elseif (!autenticado()) {
-    $_SESSION["realizar_login"] = "editar-requerimento";
-    redireciona("login.php");
-    die();
-}
-
-if (empty($id_requerimento)) {
-    $_SESSION["crud_requerimento"] = "editar_id";
-    include 'mensagens.php';
-    die();
-}
-
-if (!is_numeric($id_requerimento) || stripos($id_requerimento, "-")) {
-    $_SESSION["id_not_numeric"] = "requerimento";   
-    redireciona("historico.php");
-    die();
-}
-
-require '../database/conexao.php';
-
-$sql = "SELECT titulo, tipo, situacao, data, descricao, cep, cidade, bairro, logradouro FROM requerimento WHERE id_requerimento = ? AND id_usuario = ?";
-
-$stmt = $conn->prepare($sql);
-$result = $stmt->execute([$id_requerimento, $id_usuario]);
-$rowRequeriemento = $stmt->fetch();
-$cont =  $stmt->rowCount();
-
-if ($cont == 0) {
-    $_SESSION["id_requerimento_inexistente"] = true;
-    include 'mensagens.php';
-    die();
-}
-
-if (isset($_SESSION["error_requerimento"]) || isset($_SESSION["caracteres_requerimento"])) {
-    include 'mensagens.php';
-}
-*/
-@endphp
-
 @include ('layouts.navbar')
 
 <div class="container mx-auto">
